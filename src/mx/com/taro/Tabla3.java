@@ -11,12 +11,14 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import utilidades.Conexion;
 import utilidades.ModeloTabla;
@@ -79,10 +81,10 @@ public class Tabla3 extends JFrame implements ActionListener{
 		add(boton2);
 		boton2.addActionListener(this);
 		
-		boton3= new JButton("Update");
-		boton3.setBounds(5, 80, 100, 30);
-		add(boton3);
-		boton3.addActionListener(this);
+//		boton3= new JButton("Update");
+//		boton3.setBounds(5, 80, 100, 30);
+//		add(boton3);
+//		boton3.addActionListener(this);
 		
 	}
 	
@@ -298,7 +300,32 @@ public class Tabla3 extends JFrame implements ActionListener{
 	}
 	
 	
-	
+	public void obtenerFiltro() {
+		filtro.getDocument().addDocumentListener(new DocumentListener(){
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            String text = filtro.getText();
+
+            if (text.trim().length() == 0) {
+                rowSorter.setRowFilter(null);
+            } else {
+                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+            }
+        }
+
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+}
 	
 	
 }
