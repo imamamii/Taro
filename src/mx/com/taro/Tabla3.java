@@ -19,6 +19,8 @@ import javax.swing.RowFilter;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import utilidades.Conexion;
 import utilidades.ModeloTabla;
@@ -30,6 +32,8 @@ public class Tabla3 extends JFrame implements ActionListener{
 	String []textFields;
 	JButton boton1 ,boton2 ,boton3;
 	JTable table;
+	private TableRowSorter<TableModel> rowSorter;
+	ModeloTabla modelo;
 	
 	public Tabla3(){
 		crearComponentes();
@@ -38,7 +42,8 @@ public class Tabla3 extends JFrame implements ActionListener{
 		ingresarDatosTabla(selectConexion());
 		textFields = new String[4];
 		pasarTablaTextF();
-			
+
+		obtenerFiltro();
 			
 	}
 	
@@ -65,6 +70,17 @@ public class Tabla3 extends JFrame implements ActionListener{
 		filtro= new JTextField();
 		filtro.setBounds(300, 60, 150, 20);
 		add(filtro);
+//		filtro.addActionListener(new ActionListener(){
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				obtenerFiltro();
+//				
+//			}
+//			
+//		});
+		
+		
 		
 //		Integer a = Integer.parseInt(textfid.getText());
 		
@@ -81,10 +97,12 @@ public class Tabla3 extends JFrame implements ActionListener{
 		add(boton2);
 		boton2.addActionListener(this);
 		
-//		boton3= new JButton("Update");
-//		boton3.setBounds(5, 80, 100, 30);
-//		add(boton3);
-//		boton3.addActionListener(this);
+		boton3= new JButton("Update");
+		boton3.setBounds(5, 80, 100, 30);
+		add(boton3);
+		boton3.addActionListener(this);
+		
+		
 		
 	}
 	
@@ -167,7 +185,7 @@ public class Tabla3 extends JFrame implements ActionListener{
 			
 		}
 		
-		ModeloTabla modelo = new ModeloTabla(data,header);
+		modelo = new ModeloTabla(data,header);
 		
 		table.setModel(modelo);
 		
@@ -193,6 +211,8 @@ public class Tabla3 extends JFrame implements ActionListener{
 		pane.setViewportView(table);
 		
 		add(jp);
+		
+		
 		
 	}
 	
@@ -300,10 +320,13 @@ public class Tabla3 extends JFrame implements ActionListener{
 	}
 	
 	
+	
 	public void obtenerFiltro() {
-		filtro.getDocument().addDocumentListener(new DocumentListener(){
-
-        @Override
+		
+		rowSorter= new TableRowSorter<>(modelo);
+		table.setRowSorter(rowSorter);
+		
+		filtro.getDocument().addDocumentListener(new DocumentListener() {
         public void insertUpdate(DocumentEvent e) {
             String text = filtro.getText();
 
@@ -314,21 +337,31 @@ public class Tabla3 extends JFrame implements ActionListener{
             }
         }
 
-		@Override
 		public void removeUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
-			
+			String text = filtro.getText();
+			if (text.trim().length() == 0) {
+                rowSorter.setRowFilter(null);
+            } else {
+                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+            }
+        
 		}
 
-		@Override
 		public void changedUpdate(DocumentEvent e) {
 			// TODO Auto-generated method stub
-			
+			throw new UnsupportedOperationException("Not supported yet.");
 		}
+		
+	});
+		List<ClienteDTO> clientes =selectConexion();
+		ingresarDatosTabla(clientes);
+		
 }
+}
+
 	
 	
-}
+
 	
 
 	
