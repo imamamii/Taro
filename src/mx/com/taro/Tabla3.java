@@ -30,7 +30,7 @@ public class Tabla3 extends JFrame implements ActionListener{
 	
 	JTextField textfid,textfNombre,textfApellido,textfTel,filtro;
 	String []textFields;
-	JButton boton1 ,boton2 ,boton3;
+	JButton boton1 ,boton2 ,boton3, boton4;
 	JTable table;
 	private TableRowSorter<TableModel> rowSorter;
 	ModeloTabla modelo;
@@ -43,7 +43,7 @@ public class Tabla3 extends JFrame implements ActionListener{
 		textFields = new String[4];
 		pasarTablaTextF();
 
-		obtenerFiltro();
+//		obtenerFiltro();
 			
 	}
 	
@@ -70,15 +70,22 @@ public class Tabla3 extends JFrame implements ActionListener{
 		filtro= new JTextField();
 		filtro.setBounds(300, 60, 150, 20);
 		add(filtro);
-//		filtro.addActionListener(new ActionListener(){
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				obtenerFiltro();
-//				
-//			}
-//			
-//		});
+		filtro.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				rowSorter= new TableRowSorter<>(modelo);
+				table.setRowSorter(rowSorter);
+				  String text = filtro.getText();
+				  if (text.trim().length() == 0) {
+				     rowSorter.setRowFilter(null);
+				  } else {
+				     rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+				  }
+				
+			}
+			
+		});
 		
 		
 		
@@ -87,21 +94,25 @@ public class Tabla3 extends JFrame implements ActionListener{
 		
 		boton1= new JButton("Cargar");
 //		boton1.setName("Cargar");
-		boton1.setBounds(5, 40, 100, 30);
+		boton1.setBounds(5, 20, 100, 30);
 		add(boton1);
 //		botonaction = new Botones();
 		boton1.addActionListener(this);
 //		
 		boton2= new JButton("Agregar");
-		boton2.setBounds(5, 60, 100, 30);
+		boton2.setBounds(5, 40, 100, 30);
 		add(boton2);
 		boton2.addActionListener(this);
 		
 		boton3= new JButton("Update");
-		boton3.setBounds(5, 80, 100, 30);
+		boton3.setBounds(5, 60, 100, 30);
 		add(boton3);
 		boton3.addActionListener(this);
 		
+		boton4= new JButton("Delete");
+		boton4.setBounds(5, 80, 100, 30);
+		add(boton4);
+		boton4.addActionListener(this);
 		
 		
 	}
@@ -257,6 +268,17 @@ public class Tabla3 extends JFrame implements ActionListener{
 				ingresarDatosTabla(clientes);
 				limpiar();
 			}
+			
+			if(e.getSource()==boton4) {
+				deleteConexion(textfid.getText());
+				List<ClienteDTO> clientes =selectConexion();
+				ingresarDatosTabla(clientes);
+				limpiar();
+				
+				
+			}
+			
+			
 		
 	}
 
@@ -295,6 +317,37 @@ public class Tabla3 extends JFrame implements ActionListener{
 		
 			ClienteDaoJDBC clienteDao = new ClienteDaoJDBC(conexion);
 			clienteDao.update(clienteNuevo);
+			
+			conexion.commit();
+            System.out.println("Se ha hecho commit de la transaccion");
+			
+			Conexion.close(conexion);
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace(System.out);
+			System.out.println("Entramos al rollback");
+			try {
+				conexion.rollback();
+			} catch (SQLException ex1) {
+				ex1.printStackTrace(System.out);
+			}
+		}
+	}
+	
+	public void deleteConexion(String infoCliente) {
+		Connection conexion = null;
+		List<ClienteDTO> clientes =null;
+		try {
+			conexion = Conexion.getConnection();
+			if (conexion.getAutoCommit()) {
+				conexion.setAutoCommit(false);
+			}
+			ClienteDTO clienteNuevo = new ClienteDTO();
+			int id = Integer.parseInt(infoCliente);
+			clienteNuevo.setIdCliente(id);
+		
+			ClienteDaoJDBC clienteDao = new ClienteDaoJDBC(conexion);
+			clienteDao.delete(clienteNuevo);
 			
 			conexion.commit();
             System.out.println("Se ha hecho commit de la transaccion");
@@ -353,8 +406,8 @@ public class Tabla3 extends JFrame implements ActionListener{
 		}
 		
 	});
-		List<ClienteDTO> clientes =selectConexion();
-		ingresarDatosTabla(clientes);
+//		List<ClienteDTO> clientes =selectConexion();
+//		ingresarDatosTabla(clientes);
 		
 }
 }

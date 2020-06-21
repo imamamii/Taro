@@ -16,6 +16,7 @@ public class ClienteDaoJDBC {
     private static final String SQL_SELECT = "SELECT ID, NOMBRE, APELLIDO, TELEFONO  FROM TEST";
     private static final String SQL_INSERT = "INSERT INTO TEST (NOMBRE, APELLIDO, TELEFONO) VALUES(?,?,?);";
     private static final String SQL_UPDATE = "UPDATE TEST SET NOMBRE=?, APELLIDO=?, TELEFONO=? WHERE ID = ?";
+    private static final String SQL_DELETE = "DELETE FROM TEST WHERE ID=?";
 
     ClienteDaoJDBC(){
     	
@@ -114,7 +115,30 @@ public class ClienteDaoJDBC {
         
         return rows;
     }
-
+    
+    
+    public int delete(ClienteDTO cliente){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int rows = 0;
+        
+        try {
+            conn = Conexion.getConnection();
+            System.out.println("Ejecutando query:" + SQL_DELETE);
+            stmt = conn.prepareStatement(SQL_DELETE);
+            stmt.setInt(1, cliente.getIdCliente());
+            rows = stmt.executeUpdate();
+            System.out.println("Registros eliminados:" + rows);
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        finally{
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        
+        return rows;
+    }
 
 
 
