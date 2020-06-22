@@ -22,11 +22,11 @@ public class Mero {
 //		Ventana mi = new Ventana();
 //		mi.setVisible(true);
 		
-		Tabla3 abc = new Tabla3();
-		abc.setBounds(0, 0, 800, 400);
+		Sistema abc = new Sistema();
+		abc.setBounds(0, 0, 1300, 700);
 		abc.setLocationRelativeTo(null);
 		abc.setVisible(true);
-		abc.setResizable(false);
+		abc.setResizable(true);
 		
 //		Ventana2 abc = new Ventana2();
 //		abc.setBounds(0, 0, 800, 400);

@@ -43,7 +43,7 @@ public class Tabla3 extends JFrame implements ActionListener{
 		textFields = new String[4];
 		pasarTablaTextF();
 
-//		obtenerFiltro();
+		obtenerFiltro();
 			
 	}
 	
@@ -250,8 +250,12 @@ public class Tabla3 extends JFrame implements ActionListener{
 				
 //			System.out.println("texto"+ tabli.textFields[0]);
 			insertConexion(textFields);
+			
+			
 			List<ClienteDTO> clientes =selectConexion();
 			ingresarDatosTabla(clientes);
+			rowSorter= new TableRowSorter<>(modelo);
+			table.setRowSorter(rowSorter);	
 			limpiar();
 		}
 			
@@ -266,6 +270,8 @@ public class Tabla3 extends JFrame implements ActionListener{
 				updateConexion(textFields);
 				List<ClienteDTO> clientes =selectConexion();
 				ingresarDatosTabla(clientes);
+				rowSorter= new TableRowSorter<>(modelo);
+				table.setRowSorter(rowSorter);
 				limpiar();
 			}
 			
@@ -273,6 +279,8 @@ public class Tabla3 extends JFrame implements ActionListener{
 				deleteConexion(textfid.getText());
 				List<ClienteDTO> clientes =selectConexion();
 				ingresarDatosTabla(clientes);
+				rowSorter= new TableRowSorter<>(modelo);
+				table.setRowSorter(rowSorter);
 				limpiar();
 				
 				
@@ -371,9 +379,7 @@ public class Tabla3 extends JFrame implements ActionListener{
 		textfApellido.setText("");
 		textfTel.setText("");
 	}
-	
-	
-	
+		
 	public void obtenerFiltro() {
 		
 		rowSorter= new TableRowSorter<>(modelo);
