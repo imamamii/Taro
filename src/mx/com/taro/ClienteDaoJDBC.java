@@ -7,16 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JRadioButton;
 
 import utilidades.Conexion;
 
 public class ClienteDaoJDBC {
 	private Connection conexionTransaccional;
 
-    private static final String SQL_SELECT = "SELECT ID, NOMBRE, APELLIDO, TELEFONO  FROM TEST";
-    private static final String SQL_INSERT = "INSERT INTO TEST (NOMBRE, APELLIDO, TELEFONO) VALUES(?,?,?);";
-    private static final String SQL_UPDATE = "UPDATE TEST SET NOMBRE=?, APELLIDO=?, TELEFONO=? WHERE ID = ?";
-    private static final String SQL_DELETE = "DELETE FROM TEST WHERE ID=?";
+    private static final String SQL_SELECT = "SELECT ID, NOMBRE, APELLIDO, TELEFONO,CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,EDAD,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS FROM SISTEMASQL";
+    private static final String SQL_INSERT = "INSERT INTO SISTEMASQL (NOMBRE, APELLIDO, TELEFONO,CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,EDAD,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+    private static final String SQL_UPDATE = "UPDATE SISTEMASQL SET NOMBRE=?, APELLIDO=?, TELEFONO=? ,CALLE=?,NUMEXT=?,NUMINT=?,COLONIA=?,DELEGACION=?,CP=?,ECALLE=?,YCALLE=?,COLOR=?,ALERGIA=?,INTOLERANCIA=?,REGIMEN=?,EDAD=?,CUMPLE=?,PREFERENCIA=?,INSTAGRAM=?,FB=?,CORREO=?,NOTAS=? WHERE ID = ?";
+    private static final String SQL_DELETE = "DELETE FROM SISTEMASQL WHERE ID=?";
 
     ClienteDaoJDBC(){
     	
@@ -29,11 +30,31 @@ public class ClienteDaoJDBC {
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_INSERT);
-//            stmt.setInt(1, cliente.getIdCliente());
+//            stmt.setInt(0, cliente.getIdCliente());
             stmt.setString(1, cliente.getNombre());
             stmt.setString(2, cliente.getApellido());
             stmt.setString(3, cliente.getTelefono());
-
+            stmt.setString(4, cliente.getCalle());
+            stmt.setString(5, cliente.getNumExt());
+            stmt.setString(6, cliente.getNumInt());
+            stmt.setString(7, cliente.getColonia());
+            stmt.setString(8, cliente.getDelegacion());
+            stmt.setString(9, cliente.getCp());
+            stmt.setString(10, cliente.geteCalle());
+            stmt.setString(11, cliente.getyCalle());
+            stmt.setString(12, cliente.getColor());
+            stmt.setString(13, cliente.getAlergia());
+            stmt.setString(14, cliente.getIntolerancia());
+            stmt.setString(15, cliente.getRegimen());
+            stmt.setString(16, cliente.getEdad());
+            stmt.setString(17, cliente.getCumple());
+            stmt.setString(18, cliente.getPreferencia());
+            stmt.setString(19, cliente.getInstagram());
+            stmt.setString(20, cliente.getFb());
+            stmt.setString(21, cliente.getCorreo());
+            stmt.setString(22, cliente.getNotas());
+            
+            
             System.out.println("ejecutando query:" + SQL_INSERT);
             rows = stmt.executeUpdate();
             System.out.println("Registros afectados:" + rows);
@@ -67,12 +88,52 @@ public class ClienteDaoJDBC {
                 String nombre = rs.getString("NOMBRE");
                 String apellido = rs.getString("APELLIDO");
                 String telefono = rs.getString("TELEFONO");
+                String calle=rs.getString("CALLE");
+                String numExt =rs.getString("NUMEXT");
+                String numInt =rs.getString("NUMINT");
+                String colonia =rs.getString("COLONIA");
+                String delegacion=rs.getString("DELEGACION");
+                String cp =rs.getString("CP");
+                String eCalle =rs.getString("ECALLE");
+                String yCalle=rs.getString("YCALLE");
+                String color=rs.getString("COLOR");
+                String alergia=rs.getString("ALERGIA");
+                String intolerancia=rs.getString("INTOLERANCIA");
+                String regimen=rs.getString("REGIMEN");
+                String edad=rs.getString("EDAD");
+                String cumple=rs.getString("CUMPLE");
+                String preferencia=rs.getString("PREFERENCIA");
+                String instagram=rs.getString("INSTAGRAM");
+                String fb=rs.getString("FB");
+                String correo=rs.getString("CORREO");
+                String notas=rs.getString("NOTAS");
+            
+                
 
                 cliente = new ClienteDTO();
                 cliente.setIdCliente(id_cliente);
                 cliente.setNombre(nombre);
                 cliente.setApellido(apellido);
                 cliente.setTelefono(telefono);
+                cliente.setCalle(calle);
+                cliente.setNumExt(numExt);
+                cliente.setNumInt(numInt);
+                cliente.setColonia(colonia);
+                cliente.setDelegacion(delegacion);
+                cliente.setCp(cp);
+                cliente.seteCalle(eCalle);
+                cliente.setyCalle(yCalle);
+                cliente.setColor(color);
+                cliente.setAlergia(alergia);
+                cliente.setIntolerancia(intolerancia);
+                cliente.setRegimen(regimen);
+                cliente.setEdad(edad);
+                cliente.setCumple(cumple);
+                cliente.setPreferencia(preferencia);
+                cliente.setInstagram(instagram);
+                cliente.setFb(fb);
+                cliente.setCorreo(correo);
+                cliente.setNotas(notas);
 
                 clientes.add(cliente);
             }
@@ -100,7 +161,28 @@ public class ClienteDaoJDBC {
             stmt.setString(1, cliente.getNombre());
             stmt.setString(2, cliente.getApellido());
             stmt.setString(3, cliente.getTelefono());
-            stmt.setInt(4, cliente.getIdCliente());
+            stmt.setString(4, cliente.getCalle());
+            stmt.setString(5, cliente.getNumExt());
+            stmt.setString(6, cliente.getNumInt());
+            stmt.setString(7, cliente.getColonia());
+            stmt.setString(8, cliente.getDelegacion());
+            stmt.setString(9, cliente.getCp());
+            stmt.setString(10, cliente.geteCalle());
+            stmt.setString(11, cliente.getyCalle());
+            stmt.setString(12, cliente.getColor());
+            stmt.setString(13, cliente.getAlergia());
+            stmt.setString(14, cliente.getIntolerancia());
+            stmt.setString(15, cliente.getRegimen());
+            stmt.setString(16, cliente.getEdad());
+            stmt.setString(17, cliente.getCumple());
+            stmt.setString(18, cliente.getPreferencia());
+            stmt.setString(19, cliente.getInstagram());
+            stmt.setString(20, cliente.getFb());
+            stmt.setString(21, cliente.getCorreo());
+            stmt.setString(22, cliente.getNotas());
+            
+            stmt.setInt(23, cliente.getIdCliente());
+            
             
             rows = stmt.executeUpdate();
             System.out.println("Registros actualizado:" + rows);

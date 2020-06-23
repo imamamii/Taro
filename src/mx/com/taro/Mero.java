@@ -23,7 +23,7 @@ public class Mero {
 //		mi.setVisible(true);
 		
 		Sistema abc = new Sistema();
-		abc.setBounds(0, 0, 1300, 700);
+		abc.setBounds(0, 0, 1300, 800);
 		abc.setLocationRelativeTo(null);
 		abc.setVisible(true);
 		abc.setResizable(true);
@@ -35,33 +35,33 @@ public class Mero {
 //		abc.setResizable(false);
 //		
 //		
-//		 Connection conexion = null;
-//	        try {
-//	            conexion = Conexion.getConnection();
-//	            if (conexion.getAutoCommit()) {
-//	                conexion.setAutoCommit(false);
-//	            }
-//
-//	            ClienteDaoJDBC clienteDao = new ClienteDaoJDBC(conexion);
-//	            
-//	            List<ClienteDTO> clientes = clienteDao.select();
-//	            
-//	            for(ClienteDTO cliente: clientes){
-//	                System.out.println("Persona DTO:" + cliente);
-//	            }
-//	            
-//	            conexion.commit();
-//	            System.out.println("Se ha hecho commit de la transaccion");
-//	        } catch (SQLException ex) {
-//	            ex.printStackTrace(System.out);
-//	            System.out.println("Entramos al rollback");
-//	            try {
-//	                conexion.rollback();
-//	            } catch (SQLException ex1) {
-//	                ex1.printStackTrace(System.out);
-//	            }
-//	        }
-//		
+		 Connection conexion = null;
+	        try {
+	            conexion = Conexion.getConnection();
+	            if (conexion.getAutoCommit()) {
+	                conexion.setAutoCommit(false);
+	            }
+
+	            ClienteDaoJDBC clienteDao = new ClienteDaoJDBC(conexion);
+	            
+	            List<ClienteDTO> clientes = clienteDao.select();
+	            
+	            for(ClienteDTO cliente: clientes){
+	                System.out.println("Persona DTO:" + cliente);
+	            }
+	            
+	            conexion.commit();
+	            System.out.println("Se ha hecho commit de la transaccion");
+	        } catch (SQLException ex) {
+	            ex.printStackTrace(System.out);
+	            System.out.println("Entramos al rollback");
+	            try {
+	                conexion.rollback();
+	            } catch (SQLException ex1) {
+	                ex1.printStackTrace(System.out);
+	            }
+	        }
+		
 }
 
 }

@@ -184,7 +184,7 @@ public class Tabla3 extends JFrame implements ActionListener{
 	
 	public void ingresarDatosTabla(List<ClienteDTO> clientes) {
 		
-		String[] header = {"Id","Nombre","Apellido","Telefono"};
+		String[] header = {"Nombre","Apellido","Telefono"};
 		
 		Object data[][]= new Object[clientes.size()][header.length];
 		
