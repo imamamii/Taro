@@ -42,7 +42,7 @@ public class Sistema extends JFrame implements ActionListener {
 
 	public JRadioButton rbVegetariano, rbVegano, rbNinguno;
 
-	JButton bGuardar, bModificar, bNuevo, bEliminar;
+	JButton bGuardar, bModificar, bNuevo, bEliminar, bCancelar;
 
 	JTextArea taNotas;
 	JScrollPane spNotas;
@@ -310,28 +310,34 @@ public class Sistema extends JFrame implements ActionListener {
 
 		bGuardar = new JButton();
 		bGuardar = new JButton("GUARDAR");
-		bGuardar.setBounds(15, 690, 95, 75);
+		bGuardar.setBounds(15, 690, 75, 75);
 		add(bGuardar);
 //		bGuardar.setVerticalAlignment(SwingConstants.BOTTOM);
 		bGuardar.addActionListener(this);
 
 		bModificar = new JButton();
 		bModificar = new JButton("MODIFICAR");
-		bModificar.setBounds(115, 690, 95, 75);
+		bModificar.setBounds(95, 690, 75, 75);
 		add(bModificar);
 		bModificar.addActionListener(this);
 
 		bNuevo = new JButton();
 		bNuevo = new JButton("NUEVO");
-		bNuevo.setBounds(215, 690, 95, 75);
+		bNuevo.setBounds(175, 690, 75, 75);
 		add(bNuevo);
 		bNuevo.addActionListener(this);
 
 		bEliminar = new JButton();
 		bEliminar = new JButton("ELIMINAR");
-		bEliminar.setBounds(315, 690, 95, 75);
+		bEliminar.setBounds(255, 690, 75, 75);
 		add(bEliminar);
 		bEliminar.addActionListener(this);
+//		
+		bCancelar = new JButton();
+		bCancelar = new JButton("CANCELAR");
+		bCancelar.setBounds(335, 690, 75, 75);
+		add(bCancelar);
+		bCancelar.addActionListener(this);
 
 		filtro = new JTextField();
 		filtro.setBounds(645, 30, 410, 35);
@@ -687,16 +693,18 @@ public class Sistema extends JFrame implements ActionListener {
 			
 			if(textfid.getText().equals("")) {
 				insertConexion(textFields);
+				
 			}
 			else {
 				updateConexion(textFields);
+				
 			}
 			
 			List<ClienteDTO> clientes = selectConexion();
 			ingresarDatosTabla(clientes);
 			rowSorter = new TableRowSorter<>(modelo);
 			table.setRowSorter(rowSorter);
-			limpiarTextF();
+//			limpiarTextF();
 			
 			habilitarDefaultBotones();
 			deshabilitarCampos();
@@ -758,6 +766,14 @@ public class Sistema extends JFrame implements ActionListener {
 
 		}
 		
+		//cancelar
+		if(e.getSource()== bCancelar) {
+			limpiarTextF();
+			deshabilitarCampos();
+			habilitarDefaultBotones();
+			
+		}
+		
 		
 	}
 
@@ -802,6 +818,7 @@ public class Sistema extends JFrame implements ActionListener {
 		bGuardar.setEnabled(false);
 		bModificar.setEnabled(false);
 		bEliminar.setEnabled(false);
+		bCancelar.setEnabled(false);
 	}
 	
 	//habilita guardar
@@ -812,6 +829,7 @@ public class Sistema extends JFrame implements ActionListener {
 		bGuardar.setEnabled(true);
 		bModificar.setEnabled(false);
 		bEliminar.setEnabled(false);
+		bCancelar.setEnabled(true);
 	}
 	
 	//habilitar nuevo,modificar,eliminar
@@ -822,6 +840,7 @@ public class Sistema extends JFrame implements ActionListener {
 		bGuardar.setEnabled(false);
 		bModificar.setEnabled(true);
 		bEliminar.setEnabled(true);
+		bCancelar.setEnabled(false);
 	}
 	
 	//habilita TextFile
