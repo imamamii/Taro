@@ -29,7 +29,7 @@ public class Mero {
 //		Ventana mi = new Ventana();
 //		mi.setVisible(true);
 		
-		Ejemplo abc = new Ejemplo();
+		Sistema abc = new Sistema();
 		abc.setBounds(0, 0, 1300, 800);
 		abc.setLocationRelativeTo(null);
 		abc.setVisible(true);

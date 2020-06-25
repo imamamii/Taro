@@ -1,6 +1,7 @@
 package mx.com.taro;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -541,8 +543,11 @@ public class Sistema extends JFrame implements ActionListener {
 	public void limpiarTextF() {
 		textfid.setText("");
 		textfNombre.setText("");
+		textfNombre.setBackground(Color.white);
 		textfApellido.setText("");
+		textfApellido.setBackground(Color.white);
 		textfTel.setText("");
+		textfTel.setBackground(Color.white);
 		textfCalle.setText("");
 		textfNumExt.setText("");
 		textfNumInt.setText("");
@@ -688,26 +693,38 @@ public class Sistema extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		// select
 		if (e.getSource() == bGuardar) {
-
-			generarCampos();
 			
-			if(textfid.getText().equals("")) {
-				insertConexion(textFields);
+			if(textfNombre.getText().equals("")||textfApellido.getText().equals("")||textfTel.getText().equals("")) {
+				campoVacio();
+				habilitarCampos();
+				deshabilitarBotones();
 				
-			}
-			else {
-				updateConexion(textFields);
+			}else {
+				textfNombre.setBackground(Color.white);
+				textfApellido.setBackground(Color.white);
+				textfTel.setBackground(Color.white);
+				generarCampos();
+				if(textfid.getText().equals("")) {
+					insertConexion(textFields);
+					
+				}
+				else {
+					updateConexion(textFields);
+					
+				}
 				
-			}
-			
-			List<ClienteDTO> clientes = selectConexion();
-			ingresarDatosTabla(clientes);
-			rowSorter = new TableRowSorter<>(modelo);
-			table.setRowSorter(rowSorter);
+				List<ClienteDTO> clientes = selectConexion();
+				ingresarDatosTabla(clientes);
+				
+				rowSorter = new TableRowSorter<>(modelo);
+				table.setRowSorter(rowSorter);
 //			limpiarTextF();
+				
+				habilitarDefaultBotones();
+				deshabilitarCampos();
+			}
 			
-			habilitarDefaultBotones();
-			deshabilitarCampos();
+
 			
 			
 		}
@@ -905,6 +922,36 @@ public class Sistema extends JFrame implements ActionListener {
 	}
 	
 	
+	public void infoBox(String infoMessage, String titleBar){
+        JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.ERROR_MESSAGE);
+    }
 	
 	
+	public void campoVacio() {
+		if(textfNombre.getText().equals("")) {
+			textfNombre.setBackground(Color.pink);	
+			
+		}else {
+			textfNombre.setBackground(Color.white);
+		}
+		
+		if(textfApellido.getText().equals("")) {
+			textfApellido.setBackground(Color.pink);
+		}else {
+			textfApellido.setBackground(Color.white);
+			
+		}
+		if(textfTel.getText().equals("")) {
+			textfTel.setBackground(Color.pink);	
+			
+		}else {
+			textfTel.setBackground(Color.white);
+		}
+		
+		
+		if(textfNombre.getText().equals("")||textfApellido.getText().equals("")||textfTel.getText().equals("")) {
+			infoBox("Holakase","Title");
+			
+		}
+	}
 }
