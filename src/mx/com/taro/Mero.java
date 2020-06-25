@@ -30,6 +30,7 @@ public class Mero {
 //		mi.setVisible(true);
 		
 		Sistema abc = new Sistema();
+//		Ejemplo2 abc = new Ejemplo2();
 		abc.setBounds(0, 0, 1300, 800);
 		abc.setLocationRelativeTo(null);
 		abc.setVisible(true);

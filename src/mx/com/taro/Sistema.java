@@ -3,6 +3,7 @@ package mx.com.taro;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -309,35 +311,61 @@ public class Sistema extends JFrame implements ActionListener {
 		spNotas = new JScrollPane(taNotas);
 		spNotas.setBounds(113, 623, 294, 60);
 		add(spNotas);
+		
+		ImageIcon iconGuardar = new ImageIcon("src/resources/saveicon.png"); // load the image to a imageIcon
+		Image imageGuardar = iconGuardar.getImage(); // transform it
+		Image newimgGuardar = imageGuardar.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		iconGuardar = new ImageIcon(newimgGuardar); 
 
-		bGuardar = new JButton();
-		bGuardar = new JButton("GUARDAR");
+		bGuardar = new JButton(iconGuardar);
+//		bGuardar = new JButton("GUARDAR");
 		bGuardar.setBounds(15, 690, 75, 75);
+		bGuardar.setToolTipText("GUARDAR");
 		add(bGuardar);
 //		bGuardar.setVerticalAlignment(SwingConstants.BOTTOM);
 		bGuardar.addActionListener(this);
+		
+		ImageIcon iconModificar = new ImageIcon("src/resources/modifyicon.png"); // load the image to a imageIcon
+		Image imageModificar = iconModificar.getImage(); // transform it
+		Image newimgModificar = imageModificar.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		iconModificar = new ImageIcon(newimgModificar); 
 
-		bModificar = new JButton();
-		bModificar = new JButton("MODIFICAR");
+		bModificar = new JButton(iconModificar);
 		bModificar.setBounds(95, 690, 75, 75);
+		bModificar.setToolTipText("MODIFICAR");
 		add(bModificar);
 		bModificar.addActionListener(this);
+		
+		ImageIcon iconNuevo = new ImageIcon("src/resources/newicon.png"); // load the image to a imageIcon
+		Image imageNuevo = iconNuevo.getImage(); // transform it
+		Image newimgNuevo = imageNuevo.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		iconNuevo = new ImageIcon(newimgNuevo); 
 
-		bNuevo = new JButton();
-		bNuevo = new JButton("NUEVO");
+		bNuevo = new JButton(iconNuevo);
 		bNuevo.setBounds(175, 690, 75, 75);
+		bNuevo.setToolTipText("NUEVO");
 		add(bNuevo);
 		bNuevo.addActionListener(this);
 
-		bEliminar = new JButton();
-		bEliminar = new JButton("ELIMINAR");
+		ImageIcon iconEliminar = new ImageIcon("src/resources/deleteicon.png"); // load the image to a imageIcon
+		Image imageEliminar = iconEliminar.getImage(); // transform it
+		Image newimgEliminar = imageEliminar.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		iconEliminar = new ImageIcon(newimgEliminar); 
+		
+		bEliminar = new JButton(iconEliminar);
 		bEliminar.setBounds(255, 690, 75, 75);
+		bEliminar.setToolTipText("ELIMINAR");
 		add(bEliminar);
 		bEliminar.addActionListener(this);
-//		
-		bCancelar = new JButton();
-		bCancelar = new JButton("CANCELAR");
+		
+		ImageIcon iconCancelar = new ImageIcon("src/resources/cancelicon.png"); // load the image to a imageIcon
+		Image imageCancelar = iconCancelar.getImage(); // transform it
+		Image newimgCancelar = imageCancelar.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		iconCancelar = new ImageIcon(newimgCancelar); 
+		
+		bCancelar = new JButton(iconCancelar);
 		bCancelar.setBounds(335, 690, 75, 75);
+		bCancelar.setToolTipText("CANCELAR");
 		add(bCancelar);
 		bCancelar.addActionListener(this);
 

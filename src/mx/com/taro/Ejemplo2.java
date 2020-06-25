@@ -29,7 +29,7 @@ public class Ejemplo2 extends JFrame implements ActionListener{
 	public void crearComponentes() {
 		setLayout(null);
 		ImageIcon icon = new ImageIcon("src/resources/saveicon.png"); // load the image to a imageIcon
-		Image image = icon.getImage(); // transform it 
+		Image image = icon.getImage(); // transform it
 		Image newimg = image.getScaledInstance(20, 20,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		icon = new ImageIcon(newimg); 
 		
