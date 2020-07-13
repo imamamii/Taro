@@ -5,12 +5,13 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 public class Ejemplo2 extends JFrame implements ActionListener{
 
@@ -37,14 +38,15 @@ public class Ejemplo2 extends JFrame implements ActionListener{
 		
 		
 		boton = new JButton(icon);
-		boton.setBounds(5, 150, 70, 70);
+		boton.setBounds(120, 150, 70, 70);
 		boton.addActionListener(this);
-		add(boton);
+//		add(boton);
 		
 		nombre = new JTextField();
-		nombre.setBounds(5, 10, 100, 25);
+//		nombre.setSize(50, 25);
+		nombre.setBounds(5, 5, 100, 25);
 //		nombre.setBackground(Color.pink);
-		add(nombre);
+//		add(nombre);
 		
 		apellido = new JTextField();
 		apellido.setBounds(5, 30, 100, 25);
@@ -53,6 +55,16 @@ public class Ejemplo2 extends JFrame implements ActionListener{
 		bien = new JTextField();
 		bien.setBounds(5, 60, 100, 25);
 		add(bien);
+		
+		JPanel a = new JPanel();
+		a.setLayout(null);
+		a.setBounds(100, 100, 200, 200);
+		TitledBorder titled = new TitledBorder("Title");
+		a.add(nombre);
+	    a.setBorder(titled);
+	    a.add(boton);
+	    
+	    add(a);
 
 		
 	}

@@ -27,11 +27,13 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 ////		RadioListener myListener;
 //		ButtonGroup bg;
 
-	JComboBox<String> dia, mes, anio;
+	JComboBox dia, mes, anio;
 	Integer ldD, ldM, ldA;
 	JButton boton;
-	JTextField txt;
+	JTextField txt, cumple;
 	LocalDate yearNow;
+	Object item;
+	static String edad = "no hay" ;
 
 //	
 	public Ejemplo() throws ParseException {
@@ -44,8 +46,13 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 		
 		boton = new JButton();
 		boton.setBounds(5, 150, 30, 30);
-		
+		boton.addActionListener(this);
 		add(boton);
+		
+		cumple = new JTextField();
+		cumple.setBounds(35, 180, 100, 25);
+		add(cumple);
+		
 		
 		txt = new JTextField();
 		txt.setBounds(35, 150, 100, 25);
@@ -54,14 +61,14 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				String text = txt.getText();
+				edad = txt.getText();
 
-				if (text.trim().length() == 0) {
+				if (edad.trim().length() == 0) {
 					anio.setSelectedIndex(0);
 //					rowSorter.setRowFilter(null);
 				} else {
 					
-					anio.setSelectedIndex(Integer.parseInt(text));
+					anio.setSelectedIndex(Integer.parseInt(edad));
 					
 				}
 			}
@@ -96,12 +103,14 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 				if(mes.getSelectedItem().equals("Mes")){
 					ldM=1;
 				}else {
-					ldM = Integer.parseInt((String)mes.getSelectedItem());
+					item = mes.getSelectedItem();
+					ldM = Integer.parseInt(((ComboItemm)item).getValue());
 				}
 				
 				
 				ldA = Integer.parseInt((String)anio.getSelectedItem());
 					try {
+						
 						txt.setText(calcular(ldA, ldM, ldD));
 					} catch (ParseException e1) {
 						// TODO Auto-generated catch block
@@ -128,13 +137,40 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 		
 		add(dia);
 
-		for (int m = 0; m <= 12; m++) {
-			if (m == 0) {
-				mes.addItem("Mes");
-			} else {
-				mes.addItem(String.valueOf(m));
-			}
-		}
+//		for (int m = 0; m <= 12; m++) {
+			
+//		mes.addItem("Mes");
+//		mes.addItem("Enero");
+//		mes.addItem("Febrero");
+//		mes.addItem("Marzo");
+//		mes.addItem("Abril");
+//		mes.addItem("Mayo");
+//		mes.addItem("Junio");
+//		mes.addItem("Julio");
+//		mes.addItem("Agosto");
+//		mes.addItem("Septiembre");
+//		mes.addItem("Ocutbre");
+//		mes.addItem("Noviembre");
+//		mes.addItem("Diciembre");
+		mes.addItem(new ComboItemm("Mes", "1"));
+		mes.addItem(new ComboItemm("ENERO", "1"));
+		mes.addItem(new ComboItemm("FEBRERO", "2"));
+		mes.addItem(new ComboItemm("MARZO", "3"));
+		mes.addItem(new ComboItemm("ABRIL", "4"));
+		mes.addItem(new ComboItemm("MAYO", "5"));
+		mes.addItem(new ComboItemm("JUNIO", "6"));
+		mes.addItem(new ComboItemm("JULIO", "7"));
+		mes.addItem(new ComboItemm("AGOSTO", "8"));
+		mes.addItem(new ComboItemm("SEPTIEMBRE", "9"));
+		mes.addItem(new ComboItemm("OCTUBRE", "10"));
+			mes.addItem(new ComboItemm("NOVIEMBRE", "11"));
+			mes.addItem(new ComboItemm("DICIEMBRE", "12"));
+//			if (m == 0) {
+//				mes.addItem("Mes");
+//			} else {
+//				mes.addItem(String.valueOf(m));
+//			}
+//		}
 		add(mes);
 		
 		
@@ -202,6 +238,9 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 //			e1.printStackTrace();
 //		}
 //		
+		if(e.getSource()==boton) {
+			cumple.setText(obtenerCumple());
+		}
 	}
 	
 	
@@ -223,10 +262,22 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 	public static String calcular(int ldA, int ldM, int ldD) throws ParseException {
 
 		LocalDate l = LocalDate.of(ldA, ldM, ldD); // specify year, month, date directly
+		
 		LocalDate now = LocalDate.now(); // gets localDate
 		Period diff = Period.between(l, now); // difference between the dates is calculated
 //		System.out.println(diff.getYears() + "years" + diff.getMonths() + "months" + diff.getDays() + "days");
-		return String.valueOf(diff.getYears());
+		edad = String.valueOf(diff.getYears());
+		return edad;
+	}
+	
+	public String obtenerCumple() {
+		String diaS = (String)dia.getSelectedItem();
+		String mesS= ((ComboItemm)item).getValue();
+		String anioS = (String)anio.getSelectedItem();
+		
+		String cumpleS= diaS + mesS+ anioS + edad;
+		
+		return cumpleS;
 	}
 	
 	public void obtenerFiltro() {
@@ -302,4 +353,30 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 //		
 //	}
 
+}
+class ComboItemm{
+    private String key;
+    private String value;
+
+    public ComboItemm(String key, String value)
+    {
+        this.key = key;
+        this.value = value;
+    }
+
+    @Override
+    public String toString()
+    {
+        return key;
+    }
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
 }

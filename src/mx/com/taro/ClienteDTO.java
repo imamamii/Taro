@@ -1,13 +1,16 @@
 package mx.com.taro;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class ClienteDTO {
 	
 	
 	private Integer idCliente;
 	private String nombre,apellido,telefono,calle,numInt,numExt,colonia,delegacion,cp,
 	eCalle,yCalle,color,alergia,intolerancia,regimen,
-	edad,cumple,preferencia,instagram,fb,correo,notas;
-
+	edad,preferencia,instagram,fb,correo,notas;
+	private LocalDate cumple;
 	
 	
 	
@@ -19,7 +22,7 @@ public class ClienteDTO {
 			String calle,String numExt,String numInt,String colonia,String delegacion,
 			String cp,String eCalle,String yCalle,String color,String alergia,String intolerancia,
 			String regimen,
-			String edad,String cumple,String preferencia,String instagram,String fb,
+			String edad,LocalDate cumple,String preferencia,String instagram,String fb,
 			String correo,String notas){
 		super();
 		this.idCliente=idCliente;
@@ -182,18 +185,28 @@ public class ClienteDTO {
 	}
 
 	public String getEdad() {
+		
+//		LocalDate fechaDeNac = LocalDate.of(ldA, ldM, ldD); // specify year, month, date directly
+		
+		
+		LocalDate now = LocalDate.now(); // gets localDate
+		if(cumple!=null) {
+			Period diff = Period.between(cumple, now); // difference between the dates is calculated
+			edad = String.valueOf(diff.getYears());
+		}
+//		System.out.println(diff.getYears() + "years" + diff.getMonths() + "months" + diff.getDays() + "days");
 		return edad;
 	}
 
-	public void setEdad(String edad) {
-		this.edad = edad;
-	}
+//	public void setEdad(String edad) {
+//		this.edad = edad;
+//	}
 
-	public String getCumple() {
+	public LocalDate getCumple() {
 		return cumple;
 	}
 
-	public void setCumple(String cumple) {
+	public void setCumple(LocalDate cumple) {
 		this.cumple = cumple;
 	}
 

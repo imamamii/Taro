@@ -1,6 +1,7 @@
 package mx.com.taro;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,9 +15,9 @@ import utilidades.Conexion;
 public class ClienteDaoJDBC {
 	private Connection conexionTransaccional;
 
-    private static final String SQL_SELECT = "SELECT ID, NOMBRE, APELLIDO, TELEFONO,CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,EDAD,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS FROM SISTEMASQL";
-    private static final String SQL_INSERT = "INSERT INTO SISTEMASQL (NOMBRE, APELLIDO, TELEFONO,CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,EDAD,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-    private static final String SQL_UPDATE = "UPDATE SISTEMASQL SET NOMBRE=?, APELLIDO=?, TELEFONO=? ,CALLE=?,NUMEXT=?,NUMINT=?,COLONIA=?,DELEGACION=?,CP=?,ECALLE=?,YCALLE=?,COLOR=?,ALERGIA=?,INTOLERANCIA=?,REGIMEN=?,EDAD=?,CUMPLE=?,PREFERENCIA=?,INSTAGRAM=?,FB=?,CORREO=?,NOTAS=? WHERE ID = ?";
+    private static final String SQL_SELECT = "SELECT ID, NOMBRE, APELLIDO, TELEFONO,CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS FROM SISTEMASQL";
+    private static final String SQL_INSERT = "INSERT INTO SISTEMASQL (NOMBRE, APELLIDO, TELEFONO,CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+    private static final String SQL_UPDATE = "UPDATE SISTEMASQL SET NOMBRE=?, APELLIDO=?, TELEFONO=? ,CALLE=?,NUMEXT=?,NUMINT=?,COLONIA=?,DELEGACION=?,CP=?,ECALLE=?,YCALLE=?,COLOR=?,ALERGIA=?,INTOLERANCIA=?,REGIMEN=?,CUMPLE=?,PREFERENCIA=?,INSTAGRAM=?,FB=?,CORREO=?,NOTAS=? WHERE ID = ?";
     private static final String SQL_DELETE = "DELETE FROM SISTEMASQL WHERE ID=?";
 
     ClienteDaoJDBC(){
@@ -46,13 +47,15 @@ public class ClienteDaoJDBC {
             stmt.setString(13, cliente.getAlergia());
             stmt.setString(14, cliente.getIntolerancia());
             stmt.setString(15, cliente.getRegimen());
-            stmt.setString(16, cliente.getEdad());
-            stmt.setString(17, cliente.getCumple());
-            stmt.setString(18, cliente.getPreferencia());
-            stmt.setString(19, cliente.getInstagram());
-            stmt.setString(20, cliente.getFb());
-            stmt.setString(21, cliente.getCorreo());
-            stmt.setString(22, cliente.getNotas());
+//            stmt.setsetString(16, cliente.getEdad());
+            stmt.setDate(16, Date.valueOf(cliente.getCumple()));
+            //stmt.setDate(int,Date)pero estoy mandando LocalDate, por lo tanto se tiene que convertir a Date con el valueOf
+//            stmt.setDate(17, java.sql.Date.valueOf(cliente.getCumple()));
+            stmt.setString(17, cliente.getPreferencia());
+            stmt.setString(18, cliente.getInstagram());
+            stmt.setString(19, cliente.getFb());
+            stmt.setString(20, cliente.getCorreo());
+            stmt.setString(21, cliente.getNotas());
             
             
             System.out.println("ejecutando query:" + SQL_INSERT);
@@ -100,8 +103,8 @@ public class ClienteDaoJDBC {
                 String alergia=rs.getString("ALERGIA");
                 String intolerancia=rs.getString("INTOLERANCIA");
                 String regimen=rs.getString("REGIMEN");
-                String edad=rs.getString("EDAD");
-                String cumple=rs.getString("CUMPLE");
+//                String edad=rs.getString("EDAD");
+                Date cumple=rs.getDate("CUMPLE");
                 String preferencia=rs.getString("PREFERENCIA");
                 String instagram=rs.getString("INSTAGRAM");
                 String fb=rs.getString("FB");
@@ -127,8 +130,13 @@ public class ClienteDaoJDBC {
                 cliente.setAlergia(alergia);
                 cliente.setIntolerancia(intolerancia);
                 cliente.setRegimen(regimen);
-                cliente.setEdad(edad);
-                cliente.setCumple(cumple);
+//                cliente.setEdad(edad);
+                // TODO explicar NullPointer
+                if(cumple==null) {
+                	cliente.setCumple(null);
+                }else {
+                	cliente.setCumple(cumple.toLocalDate());
+                }
                 cliente.setPreferencia(preferencia);
                 cliente.setInstagram(instagram);
                 cliente.setFb(fb);
@@ -173,15 +181,15 @@ public class ClienteDaoJDBC {
             stmt.setString(13, cliente.getAlergia());
             stmt.setString(14, cliente.getIntolerancia());
             stmt.setString(15, cliente.getRegimen());
-            stmt.setString(16, cliente.getEdad());
-            stmt.setString(17, cliente.getCumple());
-            stmt.setString(18, cliente.getPreferencia());
-            stmt.setString(19, cliente.getInstagram());
-            stmt.setString(20, cliente.getFb());
-            stmt.setString(21, cliente.getCorreo());
-            stmt.setString(22, cliente.getNotas());
+//            stmt.setString(16, cliente.getEdad());
+            stmt.setDate(16, Date.valueOf(cliente.getCumple()));
+            stmt.setString(17, cliente.getPreferencia());
+            stmt.setString(18, cliente.getInstagram());
+            stmt.setString(19, cliente.getFb());
+            stmt.setString(20, cliente.getCorreo());
+            stmt.setString(21, cliente.getNotas());
             
-            stmt.setInt(23, cliente.getIdCliente());
+            stmt.setInt(22, cliente.getIdCliente());
             
             
             rows = stmt.executeUpdate();
