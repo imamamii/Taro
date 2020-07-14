@@ -67,6 +67,8 @@ public class Sistema extends JFrame implements ActionListener {
 
 	JTextArea taNotas;
 	JScrollPane spNotas;
+	
+	JPanel todo = new JPanel();
 
 	String[] textFields;
 //	JButton boton1 ,boton2 ,boton3, boton4;
@@ -75,6 +77,9 @@ public class Sistema extends JFrame implements ActionListener {
 	ModeloTabla modelo;
 
 	public Sistema() {
+		
+//		todo.setBounds(0, 0, 435, 800);
+//		add(todo);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 //		setIconImage(new ImageIcon(getClass().getResource("/Taro/sloth.png")).getImage());
@@ -113,7 +118,7 @@ public class Sistema extends JFrame implements ActionListener {
 		add(labelNombre);
 
 		textfNombre = new JTextField();
-		textfNombre.setBounds(12, 70, 195, 25);
+		textfNombre.setBounds(12, 70, 200, 25);
 		textfNombre.setFont(new Font("Arial", Font.PLAIN, 14));
 		add(textfNombre);
 
@@ -138,7 +143,7 @@ public class Sistema extends JFrame implements ActionListener {
 		add(labelTel);
 
 		textfTel = new JTextField();
-		textfTel.setBounds(12, 113, 205, 25);
+		textfTel.setBounds(12, 113, 200, 25);
 		textfTel.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfTel.setVisible(false);
 		add(textfTel);
@@ -161,7 +166,7 @@ public class Sistema extends JFrame implements ActionListener {
 //		labelCalle.setVisible(false);
 		
 		textfCalle = new JTextField();
-		textfCalle.setBounds(6, 35, 205, 25);
+		textfCalle.setBounds(6, 35, 200, 25);
 		textfCalle.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfCalle.setVisible(false);
 		
@@ -201,7 +206,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		
 		textfColonia = new JTextField();
-		textfColonia.setBounds(6, 78, 205, 25);
+		textfColonia.setBounds(6, 78, 200, 25);
 		textfColonia.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfColonia.setVisible(false);
 		
@@ -226,7 +231,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		
 		textfECalle = new JTextField();
-		textfECalle.setBounds(6, 121, 205, 25);
+		textfECalle.setBounds(6, 121, 200, 25);
 		textfECalle.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfECalle.setVisible(false);
 		
@@ -245,7 +250,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		
 		labelCP = new JLabel("C.P.");
-		labelCP.setBounds(10, 144, 50, 30);
+		labelCP.setBounds(10, 144, 48, 30);
 		labelCP.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelCP.setForeground(Color.WHITE);
 //		labelCP.setVisible(false);
@@ -316,7 +321,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 
 		textfAlergia = new JTextField();
-		textfAlergia.setBounds(6, 35, 205, 25);
+		textfAlergia.setBounds(6, 35, 200, 25);
 		textfAlergia.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfAlergia.setVisible(false);
 		
@@ -412,7 +417,7 @@ public class Sistema extends JFrame implements ActionListener {
 
 		mes = new JComboBox();
 //		mes.setBounds(100, 490, 90, 25);
-		mes.setBounds(88, 490, 125, 25);
+		mes.setBounds(88, 485, 125, 25);
 		mes.addFocusListener(new FocusListener() {
 			
 			@Override
@@ -429,7 +434,7 @@ public class Sistema extends JFrame implements ActionListener {
 
 		anio = new JComboBox();
 //		anio.setBounds(190, 490, 100, 25);
-		anio.setBounds(211, 490, 90, 25);
+		anio.setBounds(211, 485, 90, 25);
 		
 		
 		anio.addFocusListener(new FocusListener() {
@@ -530,7 +535,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 
 		textfPreferencia = new JTextField();
-		textfPreferencia.setBounds(6, 80, 205, 25);
+		textfPreferencia.setBounds(6, 80, 200, 25);
 		textfPreferencia.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 		labelCorreo = new JLabel("Correo:");
@@ -551,7 +556,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 
 		textfInstagram = new JTextField();
-		textfInstagram.setBounds(6, 123, 205, 25);
+		textfInstagram.setBounds(6, 123, 200, 25);
 		textfInstagram.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 
