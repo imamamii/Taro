@@ -12,9 +12,9 @@ import org.h2.jdbcx.JdbcConnectionPool;
 
 public class Conexion {
 	
-	private static final String JDBC_URL = "jdbc:h2:~/test1";
+	private static final String JDBC_URL = "jdbc:h2:../Taro_h2/sistema";
     private static final String JDBC_USER = "sa";
-    private static final String JDBC_PASS = "";
+    private static final String JDBC_PASS = "h2Taro";
     
     private static JdbcConnectionPool cp;
     

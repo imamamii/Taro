@@ -1,12 +1,16 @@
 package utilidades;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 //contruir una tabla 
 // una clase de swing que generes tablas con los elementos por separado
 public class ModeloTabla extends DefaultTableModel{
 	String[] titulos;
 	Object[][]datos;
+	
+//	JTableHeader header = table.getTableHeader();
+//	header.setFont(header.getFont().deriveFont(30f));
 	
 	public ModeloTabla(Object[][]datos,String[]titulos) {
 		super();

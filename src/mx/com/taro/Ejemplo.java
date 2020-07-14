@@ -13,6 +13,7 @@ import java.time.Period;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.event.ChangeEvent;
@@ -48,6 +49,8 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 		boton.setBounds(5, 150, 30, 30);
 		boton.addActionListener(this);
 		add(boton);
+		
+		
 		
 		cumple = new JTextField();
 		cumple.setBounds(35, 180, 100, 25);
@@ -238,8 +241,14 @@ public class Ejemplo extends JFrame implements ActionListener, ChangeListener {
 //			e1.printStackTrace();
 //		}
 //		
-		if(e.getSource()==boton) {
-			cumple.setText(obtenerCumple());
+//		if(e.getSource()==boton) {
+//			cumple.setText(obtenerCumple());
+//		}
+		
+		
+		int dialogResult = JOptionPane.showConfirmDialog (null, "Esta seguro que desea borrar?","Warning",JOptionPane.YES_NO_OPTION);
+		if(dialogResult == JOptionPane.YES_OPTION){
+		  cumple.setText("eliminado");
 		}
 	}
 	

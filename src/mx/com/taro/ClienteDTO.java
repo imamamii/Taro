@@ -3,6 +3,8 @@ package mx.com.taro;
 import java.time.LocalDate;
 import java.time.Period;
 
+import utilidades.Edad;
+
 public class ClienteDTO {
 	
 	
@@ -187,13 +189,8 @@ public class ClienteDTO {
 	public String getEdad() {
 		
 //		LocalDate fechaDeNac = LocalDate.of(ldA, ldM, ldD); // specify year, month, date directly
-		
-		
-		LocalDate now = LocalDate.now(); // gets localDate
-		if(cumple!=null) {
-			Period diff = Period.between(cumple, now); // difference between the dates is calculated
-			edad = String.valueOf(diff.getYears());
-		}
+	
+		this.edad = Edad.calcularEdad(cumple);
 //		System.out.println(diff.getYears() + "years" + diff.getMonths() + "months" + diff.getDays() + "days");
 		return edad;
 	}
