@@ -113,7 +113,7 @@ public class Sistema extends JFrame implements ActionListener {
 		add(labelNombre);
 
 		textfNombre = new JTextField();
-		textfNombre.setBounds(12, 70, 205, 25);
+		textfNombre.setBounds(12, 70, 195, 25);
 		textfNombre.setFont(new Font("Arial", Font.PLAIN, 14));
 		add(textfNombre);
 
@@ -341,9 +341,11 @@ public class Sistema extends JFrame implements ActionListener {
 		rbVegano = new JRadioButton("Vegano");
 		rbVegano.setBounds(188, 410, 100, 30);
 		rbVegano.setForeground(Color.WHITE);
+		rbVegano.setBackground(new Color(140,160,80));
 		rbNinguno = new JRadioButton("Ninguno", true);
 		rbNinguno.setBounds(285, 410, 100, 30);
 		rbNinguno.setForeground(Color.WHITE);
+		rbNinguno.setBackground(new Color(140,160,80));
 		rbNinguno.setSelected(true);
 
 		ButtonGroup bg = new ButtonGroup();
