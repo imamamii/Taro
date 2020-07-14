@@ -238,7 +238,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		
 		textfYCalle = new JTextField();
-		textfYCalle.setBounds(212, 121, 205, 25);
+		textfYCalle.setBounds(212, 124, 205, 25);
 		textfYCalle.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfYCalle.setVisible(false);
 		
@@ -251,20 +251,20 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		
 		textfCP = new JTextField();
-		textfCP.setBounds(6, 164, 205, 30);
+		textfCP.setBounds(6, 164, 100, 30);
 		textfCP.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfCP.setVisible(false);
 		
 		
 		labelColor = new JLabel("Referencia:");
-		labelColor.setBounds(216, 144, 100, 30);
+		labelColor.setBounds(111, 144, 100, 30);
 		labelColor.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelColor.setForeground(Color.WHITE);
 //		labelColor.setVisible(false);
 		
 		
 		textfColor = new JTextField();
-		textfColor.setBounds(212, 164, 205, 30);
+		textfColor.setBounds(107, 164, 311, 30);
 		textfColor.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfColor.setVisible(false);
 		
