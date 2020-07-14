@@ -68,7 +68,7 @@ public class Sistema extends JFrame implements ActionListener {
 	JTextArea taNotas;
 	JScrollPane spNotas;
 	
-	JPanel todo = new JPanel();
+	JPanel todo;
 
 	String[] textFields;
 //	JButton boton1 ,boton2 ,boton3, boton4;
@@ -78,8 +78,7 @@ public class Sistema extends JFrame implements ActionListener {
 
 	public Sistema() {
 		
-//		todo.setBounds(0, 0, 435, 800);
-//		add(todo);
+
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 //		setIconImage(new ImageIcon(getClass().getResource("/Taro/sloth.png")).getImage());
@@ -97,6 +96,13 @@ public class Sistema extends JFrame implements ActionListener {
 	}
 
 	public void crearComponentes() {
+		todo= new JPanel();
+		todo.setLayout(null);
+		todo.setBounds(0, 0, 435, 800);
+		todo.setBackground(new Color(140,160,80));
+		JScrollPane paneTodo = new JScrollPane();
+		todo.add(paneTodo);
+		add(todo);
 
 		setLayout(null);
 
@@ -104,7 +110,8 @@ public class Sistema extends JFrame implements ActionListener {
 		labelTitulo.setBounds(5, 5, 500, 45);
 		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 40));
 		labelTitulo.setForeground(Color.WHITE);
-		add(labelTitulo);
+//		add(labelTitulo);
+		todo.add(labelTitulo);
 
 		textfid = new JTextField();
 		textfid.setBounds(200, 5, 30, 25);
@@ -115,38 +122,44 @@ public class Sistema extends JFrame implements ActionListener {
 		labelNombre.setBounds(16, 50, 80, 30);
 		labelNombre.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelNombre.setForeground(Color.WHITE);
-		add(labelNombre);
+//		add(labelNombre);
+		todo.add(labelNombre);
 
 		textfNombre = new JTextField();
 		textfNombre.setBounds(12, 70, 200, 25);
 		textfNombre.setFont(new Font("Arial", Font.PLAIN, 14));
-		add(textfNombre);
+//		add(textfNombre);
+		todo.add(textfNombre);
 
 		labelApellido = new JLabel("Apellido:");
 		labelApellido.setBounds(222, 50, 80, 30);
 		labelApellido.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelApellido.setForeground(Color.WHITE);
 //		labelApellido.setVisible(false);
-		add(labelApellido);
+//		add(labelApellido);
+		todo.add(labelApellido);
 
 		textfApellido = new JTextField();
 		textfApellido.setBounds(218, 70, 205, 25);
 		textfApellido.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfApellido.setVisible(false);
-		add(textfApellido);
+//		add(textfApellido);
+		todo.add(textfApellido);
 
 		labelTel = new JLabel("Teléfono:");
 		labelTel.setBounds(16, 93, 80, 30);
 		labelTel.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelTel.setForeground(Color.WHITE);
 //		labelTel.setVisible(false);
-		add(labelTel);
+//		add(labelTel);
+		todo.add(labelTel);
 
 		textfTel = new JTextField();
 		textfTel.setBounds(12, 113, 200, 25);
 		textfTel.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfTel.setVisible(false);
-		add(textfTel);
+//		add(textfTel);
+		todo.add(textfTel);
 
 //		label = new JLabel("");
 //		label.setBounds(5, 120, 80, 30);
@@ -309,8 +322,8 @@ public class Sistema extends JFrame implements ActionListener {
 		pdireccion.add(textfCP);
 		pdireccion.add(labelColor);
 		pdireccion.add(textfColor);
-		add(pdireccion);
-
+//		add(pdireccion);
+		todo.add(pdireccion);
 
 
 		labelAlergia = new JLabel("Alergia:");
@@ -362,9 +375,13 @@ public class Sistema extends JFrame implements ActionListener {
 //		rbVegano.addChangeListener(this);
 //		rbNinguno.addChangeListener(this);
 
-		add(rbNinguno);
-		add(rbVegetariano);
-		add(rbVegano);
+//		add(rbNinguno);
+//		add(rbVegetariano);
+//		add(rbVegano);
+		
+		todo.add(rbNinguno);
+		todo.add(rbVegetariano);
+		todo.add(rbVegano);		
 		
 		JPanel pmedico = new JPanel();
 		pmedico.setLayout(null);
@@ -378,8 +395,8 @@ public class Sistema extends JFrame implements ActionListener {
 		pmedico.add(textfAlergia);
 		pmedico.add(labelIntolerancia);
 		pmedico.add(textfIntolerancia);
-		add(pmedico);
-		
+//		add(pmedico);
+		todo.add(pmedico);
 
 //		labelInfoExtra = new JLabel("INFORMACION EXTRA");
 //		labelInfoExtra.setBounds(5, 445, 180, 30);
@@ -462,7 +479,8 @@ public class Sistema extends JFrame implements ActionListener {
 			}
 		}
 		
-		add(dia);
+//		add(dia);
+		todo.add(dia);
 		
 		
 		mes.addItem(new ComboItem("Mes", "1"));
@@ -478,8 +496,8 @@ public class Sistema extends JFrame implements ActionListener {
 		mes.addItem(new ComboItem("Octubre", "10"));
 		mes.addItem(new ComboItem("Noviembre", "11"));
 		mes.addItem(new ComboItem("Diciembre", "12"));
-		add(mes);
-		
+//		add(mes);
+		todo.add(mes);
 		
 		for (int a = yearNow.getYear()+1; a >=1900 ; a--) {
 			if (a == yearNow.getYear()+1) {
@@ -490,7 +508,9 @@ public class Sistema extends JFrame implements ActionListener {
 		}
 	
 		anio.addActionListener(this);
-		add(anio);
+//		add(anio);
+		
+		todo.add(anio);
 
 		labelEdad = new JLabel("Edad:");
 		labelEdad.setBounds(321, 15, 80, 30);
@@ -593,8 +613,8 @@ public class Sistema extends JFrame implements ActionListener {
 //		
 //		pie.add(spNotas);
 		
-		add(pie);
-		
+//		add(pie);
+		todo.add(pie);
 		
 //		labelNotas = new JLabel("Notas:");
 //		labelNotas.setBounds(12, 166, 80, 30);
@@ -618,8 +638,8 @@ public class Sistema extends JFrame implements ActionListener {
 //		pie.add(labelNotas);
 		pnotas.add(spNotas);
 		
-		add(pnotas);
-		
+//		add(pnotas);
+		todo.add(pnotas);
 		
 		
 		
@@ -633,7 +653,8 @@ public class Sistema extends JFrame implements ActionListener {
 //		bGuardar = new JButton("GUARDAR");
 		bGuardar.setBounds(15, 697, 75, 75);
 		bGuardar.setToolTipText("GUARDAR");
-		add(bGuardar);
+//		add(bGuardar);
+		todo.add(bGuardar);
 //		bGuardar.setVerticalAlignment(SwingConstants.BOTTOM);
 		bGuardar.addActionListener(this);
 		
@@ -645,7 +666,8 @@ public class Sistema extends JFrame implements ActionListener {
 		bModificar = new JButton(iconModificar);
 		bModificar.setBounds(95, 697, 75, 75);
 		bModificar.setToolTipText("MODIFICAR");
-		add(bModificar);
+//		add(bModificar);
+		todo.add(bModificar);
 		bModificar.addActionListener(this);
 		
 		ImageIcon iconNuevo = new ImageIcon("Taro_img/newicon.png"); // load the image to a imageIcon
@@ -656,7 +678,8 @@ public class Sistema extends JFrame implements ActionListener {
 		bNuevo = new JButton(iconNuevo);
 		bNuevo.setBounds(175, 697, 75, 75);
 		bNuevo.setToolTipText("NUEVO");
-		add(bNuevo);
+//		add(bNuevo);
+		todo.add(bNuevo);
 		bNuevo.addActionListener(this);
 
 		ImageIcon iconEliminar = new ImageIcon("Taro_img/deleteicon2.png"); // load the image to a imageIcon
@@ -667,7 +690,8 @@ public class Sistema extends JFrame implements ActionListener {
 		bEliminar = new JButton(iconEliminar);
 		bEliminar.setBounds(255, 697, 75, 75);
 		bEliminar.setToolTipText("ELIMINAR");
-		add(bEliminar);
+//		add(bEliminar);
+		todo.add(bEliminar);
 		bEliminar.addActionListener(this);
 		
 		ImageIcon iconCancelar = new ImageIcon("Taro_img/cancelicon.png"); // load the image to a imageIcon
@@ -678,7 +702,8 @@ public class Sistema extends JFrame implements ActionListener {
 		bCancelar = new JButton(iconCancelar);
 		bCancelar.setBounds(335, 697, 75, 75);
 		bCancelar.setToolTipText("CANCELAR");
-		add(bCancelar);
+//		add(bCancelar);
+		todo.add(bCancelar);
 		bCancelar.addActionListener(this);
 
 	
@@ -688,6 +713,7 @@ public class Sistema extends JFrame implements ActionListener {
 		filtro.setFont(new Font("Arial", Font.PLAIN, 14));
 		add(filtro);
 
+		
 	}
 
 	public void iniciarTabla() {
