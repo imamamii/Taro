@@ -9,7 +9,7 @@ public class ClienteDTO {
 	
 	
 	private Integer idCliente;
-	private String nombre,apellido,telefono,calle,numInt,numExt,colonia,delegacion,cp,
+	private String nombre,apellido,telefono,casa,calle,numInt,numExt,colonia,delegacion,cp,
 	eCalle,yCalle,color,alergia,intolerancia,regimen,
 	edad,preferencia,instagram,fb,correo,notas;
 	private LocalDate cumple;
@@ -20,7 +20,7 @@ public class ClienteDTO {
 		
 	}
 	
-	public ClienteDTO(Integer idCliente,String nombre,String apellido,String telefono,
+	public ClienteDTO(Integer idCliente,String nombre,String apellido,String telefono,String casa,
 			String calle,String numExt,String numInt,String colonia,String delegacion,
 			String cp,String eCalle,String yCalle,String color,String alergia,String intolerancia,
 			String regimen,
@@ -31,6 +31,7 @@ public class ClienteDTO {
 		this.nombre=nombre;
 		this.apellido=apellido;
 		this.telefono=telefono;
+		this.casa=casa;
 		this.calle=calle;
 		this.numExt=numExt;
 		this.numInt=numInt;
@@ -75,6 +76,13 @@ public class ClienteDTO {
 	}
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+	
+	public String getCasa() {
+		return casa;
+	}
+	public void setCasa(String casa) {
+		this.casa = casa;
 	}
 
 
@@ -250,7 +258,7 @@ public class ClienteDTO {
 	@Override
 	public String toString() {
 		return "ClienteDTO [idCliente=" + idCliente + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono="
-				+ telefono + ", calle=" + calle + ", numInt=" + numInt + ", numExt=" + numExt + ", colonia=" + colonia
+				+ telefono + ", casa=" + casa +", calle=" + calle + ", numInt=" + numInt + ", numExt=" + numExt + ", colonia=" + colonia
 				+ ", delegacion=" + delegacion + ", cp=" + cp + ", eCalle=" + eCalle + ", yCalle=" + yCalle + ", color="
 				+ color + ", alergia=" + alergia + ", intolerancia=" + intolerancia + ", edad=" + edad + ", cumple="
 				+ cumple + ", preferencia=" + preferencia + ", instagram=" + instagram + ", fb=" + fb + ", correo="

@@ -15,9 +15,9 @@ import utilidades.Conexion;
 public class ClienteDaoJDBC {
 	private Connection conexionTransaccional;
 
-    private static final String SQL_SELECT = "SELECT ID, NOMBRE, APELLIDO, TELEFONO,CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS FROM SISTEMASQL";
-    private static final String SQL_INSERT = "INSERT INTO SISTEMASQL (NOMBRE, APELLIDO, TELEFONO,CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-    private static final String SQL_UPDATE = "UPDATE SISTEMASQL SET NOMBRE=?, APELLIDO=?, TELEFONO=? ,CALLE=?,NUMEXT=?,NUMINT=?,COLONIA=?,DELEGACION=?,CP=?,ECALLE=?,YCALLE=?,COLOR=?,ALERGIA=?,INTOLERANCIA=?,REGIMEN=?,CUMPLE=?,PREFERENCIA=?,INSTAGRAM=?,FB=?,CORREO=?,NOTAS=? WHERE ID = ?";
+    private static final String SQL_SELECT = "SELECT ID, NOMBRE, APELLIDO, TELEFONO,CASA, CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS FROM SISTEMASQL ORDER BY ID DESC";
+    private static final String SQL_INSERT = "INSERT INTO SISTEMASQL (NOMBRE, APELLIDO, TELEFONO,CASA,CALLE,NUMEXT,NUMINT,COLONIA,DELEGACION,CP,ECALLE,YCALLE,COLOR,ALERGIA,INTOLERANCIA,REGIMEN,CUMPLE,PREFERENCIA,INSTAGRAM,FB,CORREO,NOTAS) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+    private static final String SQL_UPDATE = "UPDATE SISTEMASQL SET NOMBRE=?, APELLIDO=?, TELEFONO=? ,CASA=?,CALLE=?,NUMEXT=?,NUMINT=?,COLONIA=?,DELEGACION=?,CP=?,ECALLE=?,YCALLE=?,COLOR=?,ALERGIA=?,INTOLERANCIA=?,REGIMEN=?,CUMPLE=?,PREFERENCIA=?,INSTAGRAM=?,FB=?,CORREO=?,NOTAS=? WHERE ID = ?";
     private static final String SQL_DELETE = "DELETE FROM SISTEMASQL WHERE ID=?";
 
     ClienteDaoJDBC(){
@@ -35,27 +35,28 @@ public class ClienteDaoJDBC {
             stmt.setString(1, cliente.getNombre());
             stmt.setString(2, cliente.getApellido());
             stmt.setString(3, cliente.getTelefono());
-            stmt.setString(4, cliente.getCalle());
-            stmt.setString(5, cliente.getNumExt());
-            stmt.setString(6, cliente.getNumInt());
-            stmt.setString(7, cliente.getColonia());
-            stmt.setString(8, cliente.getDelegacion());
-            stmt.setString(9, cliente.getCp());
-            stmt.setString(10, cliente.geteCalle());
-            stmt.setString(11, cliente.getyCalle());
-            stmt.setString(12, cliente.getColor());
-            stmt.setString(13, cliente.getAlergia());
-            stmt.setString(14, cliente.getIntolerancia());
-            stmt.setString(15, cliente.getRegimen());
+            stmt.setString(4, cliente.getCasa());
+            stmt.setString(5, cliente.getCalle());
+            stmt.setString(6, cliente.getNumExt());
+            stmt.setString(7, cliente.getNumInt());
+            stmt.setString(8, cliente.getColonia());
+            stmt.setString(9, cliente.getDelegacion());
+            stmt.setString(10, cliente.getCp());
+            stmt.setString(11, cliente.geteCalle());
+            stmt.setString(12, cliente.getyCalle());
+            stmt.setString(13, cliente.getColor());
+            stmt.setString(14, cliente.getAlergia());
+            stmt.setString(15, cliente.getIntolerancia());
+            stmt.setString(16, cliente.getRegimen());
 //            stmt.setsetString(16, cliente.getEdad());
-            stmt.setDate(16, Date.valueOf(cliente.getCumple()));
+            stmt.setDate(17, Date.valueOf(cliente.getCumple()));
             //stmt.setDate(int,Date)pero estoy mandando LocalDate, por lo tanto se tiene que convertir a Date con el valueOf
 //            stmt.setDate(17, java.sql.Date.valueOf(cliente.getCumple()));
-            stmt.setString(17, cliente.getPreferencia());
-            stmt.setString(18, cliente.getInstagram());
-            stmt.setString(19, cliente.getFb());
-            stmt.setString(20, cliente.getCorreo());
-            stmt.setString(21, cliente.getNotas());
+            stmt.setString(18, cliente.getPreferencia());
+            stmt.setString(19, cliente.getInstagram());
+            stmt.setString(20, cliente.getFb());
+            stmt.setString(21, cliente.getCorreo());
+            stmt.setString(22, cliente.getNotas());
             
             
             System.out.println("ejecutando query:" + SQL_INSERT);
@@ -91,6 +92,7 @@ public class ClienteDaoJDBC {
                 String nombre = rs.getString("NOMBRE");
                 String apellido = rs.getString("APELLIDO");
                 String telefono = rs.getString("TELEFONO");
+                String casa = rs.getString("CASA");
                 String calle=rs.getString("CALLE");
                 String numExt =rs.getString("NUMEXT");
                 String numInt =rs.getString("NUMINT");
@@ -118,6 +120,7 @@ public class ClienteDaoJDBC {
                 cliente.setNombre(nombre);
                 cliente.setApellido(apellido);
                 cliente.setTelefono(telefono);
+                cliente.setCasa(casa);
                 cliente.setCalle(calle);
                 cliente.setNumExt(numExt);
                 cliente.setNumInt(numInt);
@@ -169,27 +172,28 @@ public class ClienteDaoJDBC {
             stmt.setString(1, cliente.getNombre());
             stmt.setString(2, cliente.getApellido());
             stmt.setString(3, cliente.getTelefono());
-            stmt.setString(4, cliente.getCalle());
-            stmt.setString(5, cliente.getNumExt());
-            stmt.setString(6, cliente.getNumInt());
-            stmt.setString(7, cliente.getColonia());
-            stmt.setString(8, cliente.getDelegacion());
-            stmt.setString(9, cliente.getCp());
-            stmt.setString(10, cliente.geteCalle());
-            stmt.setString(11, cliente.getyCalle());
-            stmt.setString(12, cliente.getColor());
-            stmt.setString(13, cliente.getAlergia());
-            stmt.setString(14, cliente.getIntolerancia());
-            stmt.setString(15, cliente.getRegimen());
+            stmt.setString(4, cliente.getCasa());
+            stmt.setString(5, cliente.getCalle());
+            stmt.setString(6, cliente.getNumExt());
+            stmt.setString(7, cliente.getNumInt());
+            stmt.setString(8, cliente.getColonia());
+            stmt.setString(9, cliente.getDelegacion());
+            stmt.setString(10, cliente.getCp());
+            stmt.setString(11, cliente.geteCalle());
+            stmt.setString(12, cliente.getyCalle());
+            stmt.setString(13, cliente.getColor());
+            stmt.setString(14, cliente.getAlergia());
+            stmt.setString(15, cliente.getIntolerancia());
+            stmt.setString(16, cliente.getRegimen());
 //            stmt.setString(16, cliente.getEdad());
-            stmt.setDate(16, Date.valueOf(cliente.getCumple()));
-            stmt.setString(17, cliente.getPreferencia());
-            stmt.setString(18, cliente.getInstagram());
-            stmt.setString(19, cliente.getFb());
-            stmt.setString(20, cliente.getCorreo());
-            stmt.setString(21, cliente.getNotas());
+            stmt.setDate(17, Date.valueOf(cliente.getCumple()));
+            stmt.setString(18, cliente.getPreferencia());
+            stmt.setString(19, cliente.getInstagram());
+            stmt.setString(20, cliente.getFb());
+            stmt.setString(21, cliente.getCorreo());
+            stmt.setString(22, cliente.getNotas());
             
-            stmt.setInt(22, cliente.getIdCliente());
+            stmt.setInt(23, cliente.getIdCliente());
             
             
             rows = stmt.executeUpdate();

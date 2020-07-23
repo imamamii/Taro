@@ -2,6 +2,7 @@ package mx.com.taro;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,10 +36,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.MaskFormatter;
 
 import utilidades.Conexion;
 import utilidades.Edad;
@@ -46,17 +52,21 @@ public class Sistema extends JFrame implements ActionListener {
 	
 	
 
-	private JTextField textfid, textfNombre, textfApellido, textfTel, textfCalle, textfNumInt, textfNumExt, textfColonia,
+	private JTextField textfid, textfNombre, textfApellido,textfTel,textfCasa, textfCalle, textfNumInt, textfNumExt, textfColonia,
 			textfDel, textfCP, textfECalle, textfYCalle, textfColor, textfAlergia, textfIntolerancia, textfCumple,
 			textfEdad, textfPreferencia, textfInstagram, textfFb, textfCorreo, filtro;
 
 	private JLabel labelTitulo, labelNombre, labelApellido, labelTel, labelDireccion, labelCalle, labelNumInt, labelNumExt,
 			labelColonia, labelDel, labelCP, labelECalle, labelYCalle, labelColor, labelAlergia, labelIntolerancia,
-			labelInfoExtra, labelCumple, labelEdad, labelPreferencia, labelInstagram, labelFb, labelCorreo, labelNotas;
+			labelInfoExtra, labelCumple, labelEdad, labelPreferencia, labelInstagram, labelFb, labelCorreo, labelNotas,labelBuscar,labelReserv;
 
 	private JRadioButton rbVegetariano, rbVegano, rbNinguno;
 	
 	private JComboBox dia, mes, anio;
+	
+	//private MaskFormatter formatter,formatterC;
+	
+//	private JFormattedTextField textfTel,textfCasa;
 	
 
 	JButton bGuardar, bModificar, bNuevo, bEliminar, bCancelar;
@@ -76,12 +86,13 @@ public class Sistema extends JFrame implements ActionListener {
 	private TableRowSorter<TableModel> rowSorter;
 	ModeloTabla modelo;
 
-	public Sistema() {
+	public Sistema() throws ParseException {
 		
 
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-//		setIconImage(new ImageIcon(getClass().getResource("/Taro/sloth.png")).getImage());
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		setIconImage(new ImageIcon(getClass().getResource("Taro/sloth.png")).getImage());
 		getContentPane().setBackground(new Color(140,160,80));
 		crearComponentes();
 		iniciarTabla();
@@ -95,7 +106,7 @@ public class Sistema extends JFrame implements ActionListener {
 //		textf1.setBounds(x, y, width, height);
 	}
 
-	public void crearComponentes() {
+	public void crearComponentes() throws ParseException {
 		todo= new JPanel();
 		todo.setLayout(null);
 		todo.setBounds(0, 0, 435, 800);
@@ -107,8 +118,8 @@ public class Sistema extends JFrame implements ActionListener {
 		setLayout(null);
 
 		labelTitulo = new JLabel("Registro Clientes");
-		labelTitulo.setBounds(5, 5, 500, 45);
-		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 40));
+		labelTitulo.setBounds(5, 0, 500, 40);
+		labelTitulo.setFont(new Font("Arial", Font.PLAIN, 33));
 		labelTitulo.setForeground(Color.WHITE);
 //		add(labelTitulo);
 		todo.add(labelTitulo);
@@ -119,20 +130,20 @@ public class Sistema extends JFrame implements ActionListener {
 		add(textfid);
 
 		labelNombre = new JLabel("Nombre:");
-		labelNombre.setBounds(16, 50, 80, 30);
+		labelNombre.setBounds(16, 33, 80, 30);
 		labelNombre.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelNombre.setForeground(Color.WHITE);
 //		add(labelNombre);
 		todo.add(labelNombre);
 
 		textfNombre = new JTextField();
-		textfNombre.setBounds(12, 70, 200, 25);
+		textfNombre.setBounds(12, 55, 200, 25);
 		textfNombre.setFont(new Font("Arial", Font.PLAIN, 14));
 //		add(textfNombre);
 		todo.add(textfNombre);
 
 		labelApellido = new JLabel("Apellido:");
-		labelApellido.setBounds(222, 50, 80, 30);
+		labelApellido.setBounds(222, 33, 80, 30);
 		labelApellido.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelApellido.setForeground(Color.WHITE);
 //		labelApellido.setVisible(false);
@@ -140,27 +151,95 @@ public class Sistema extends JFrame implements ActionListener {
 		todo.add(labelApellido);
 
 		textfApellido = new JTextField();
-		textfApellido.setBounds(218, 70, 205, 25);
+		textfApellido.setBounds(218, 55, 205, 25);
 		textfApellido.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfApellido.setVisible(false);
 //		add(textfApellido);
 		todo.add(textfApellido);
 
-		labelTel = new JLabel("TelÃ©fono:");
-		labelTel.setBounds(16, 93, 80, 30);
+		labelTel = new JLabel("Teléfono:");
+		labelTel.setBounds(16, 75, 80, 30);
 		labelTel.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelTel.setForeground(Color.WHITE);
 //		labelTel.setVisible(false);
 //		add(labelTel);
 		todo.add(labelTel);
+		
+		ImageIcon cellIco = new ImageIcon("Taro_jar/Taro_img/cell.png");
+		Image cellIma = cellIco.getImage();
+		Image cellIcon = cellIma.getScaledInstance(17, 17, java.awt.Image.SCALE_SMOOTH);
+		cellIco = new ImageIcon(cellIcon);
+		
+		JLabel cellLabel = new JLabel(cellIco);
+//		cellLabel.setBackground(Color.BLUE);
+//		cellLabel.setOpaque(true);
+		
+		cellLabel.setBounds(12,97, 20, 25);
+		todo.add(cellLabel);
+		
+		
+		
+//		formatter = new MaskFormatter("## #### ####");
+//      formatter.setPlaceholder("");
+//      textfTel = new JFormattedTextField(formatter);
+//      textfTel.setFocusLostBehavior(JFormattedTextField.PERSIST);
+//      textfTel.addMouseListener(new MouseAdapter(){
+//          public void mouseClicked(MouseEvent e){
+//              if(textfTel.getText().replaceAll("[()-]", " ").trim().length()==0)
+//                  textfTel.setCaretPosition(0);
+//              else
+//                  textfTel.setCaretPosition(textfTel.getText().length());
+//          }
+//      });
+      
+      
+      textfTel = new JTextField();
+      textfTel.setBounds(35, 97, 176, 25);
+      textfTel.setFont(new Font("Arial", Font.PLAIN, 14));
+//      textfTel.setVisible(false);
+//      add(textfTel);
 
-		textfTel = new JTextField();
-		textfTel.setBounds(12, 113, 200, 25);
-		textfTel.setFont(new Font("Arial", Font.PLAIN, 14));
-//		textfTel.setVisible(false);
-//		add(textfTel);
 		todo.add(textfTel);
+		
+		
+		ImageIcon casaIco = new ImageIcon("Taro_jar/Taro_img/house.png");
+		Image casaIma = casaIco.getImage();
+		Image casaIcon = casaIma.getScaledInstance(17, 17, java.awt.Image.SCALE_SMOOTH);
+		casaIco = new ImageIcon(casaIcon);
+		
+		JLabel casaLabel = new JLabel(casaIco);
+//		casaLabel.setBackground(Color.BLUE);
+//		casaLabel.setOpaque(true);
+		
+		casaLabel.setBounds(218,97, 20, 25);
+		todo.add(casaLabel);
 
+		
+		
+//		formatterC = new MaskFormatter("#### ####");
+////      formatter.setPlaceholder("");
+//      textfCasa = new JFormattedTextField(formatterC);
+//      textfCasa.setFocusLostBehavior(JFormattedTextField.PERSIST);
+//      textfCasa.addMouseListener(new MouseAdapter(){
+//          public void mouseClicked(MouseEvent e){
+//              if(textfCasa.getText().replaceAll("[()-]", "").trim().length()==0)
+//                  textfCasa.setCaretPosition(0);
+//              else
+//                  textfCasa.setCaretPosition(textfCasa.getText().length());
+//          }
+//      });
+      
+      
+      textfCasa = new JTextField();
+      textfCasa.setBounds(241, 97, 182, 25);
+      textfCasa.setFont(new Font("Arial", Font.PLAIN, 14));
+//      textfTel.setVisible(false);
+//      add(textfTel);
+
+		todo.add(textfCasa);
+		
+		
+		
 //		label = new JLabel("");
 //		label.setBounds(5, 120, 80, 30);
 //		label.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -173,117 +252,117 @@ public class Sistema extends JFrame implements ActionListener {
 //		add(labelDireccion);
 		
 		labelCalle = new JLabel("Calle:");
-		labelCalle.setBounds(10, 15, 78, 30);
+		labelCalle.setBounds(10, 10, 78, 30);
 		labelCalle.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelCalle.setForeground(Color.WHITE);
 //		labelCalle.setVisible(false);
 		
 		textfCalle = new JTextField();
-		textfCalle.setBounds(6, 35, 200, 25);
+		textfCalle.setBounds(6, 32, 200, 25);
 		textfCalle.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfCalle.setVisible(false);
 		
 		
-		labelNumExt = new JLabel("NÂ° Ext.");
-		labelNumExt.setBounds(216, 15, 80, 30);
+		labelNumExt = new JLabel("N° Ext.");
+		labelNumExt.setBounds(216, 10, 80, 30);
 		labelNumExt.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelNumExt.setForeground(Color.WHITE);
 //		labelNumExt.setVisible(false);
 		
 		
 		textfNumExt = new JTextField();
-		textfNumExt.setBounds(212, 35, 100, 25);
+		textfNumExt.setBounds(212, 32, 100, 25);
 		textfNumExt.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfNumExt.setVisible(false);
 		
 		
-		labelNumInt = new JLabel("NÂ° Int.");
-		labelNumInt.setBounds(321, 15, 80, 30);
+		labelNumInt = new JLabel("N° Int.");
+		labelNumInt.setBounds(321, 10, 80, 30);
 		labelNumInt.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelNumInt.setForeground(Color.WHITE);
 //		labelNumInt.setVisible(false);
 		
 		
 		textfNumInt = new JTextField();
-		textfNumInt.setBounds(317, 35, 100, 25);
+		textfNumInt.setBounds(317, 32, 100, 25);
 		textfNumInt.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfNumInt.setVisible(false);
 		
 		
 		
 		labelColonia = new JLabel("Colonia:");
-		labelColonia.setBounds(10,58, 100, 30);
+		labelColonia.setBounds(10,53, 100, 30);
 		labelColonia.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelColonia.setForeground(Color.WHITE);
 //		labelColonia.setVisible(false);
 		
 		
 		textfColonia = new JTextField();
-		textfColonia.setBounds(6, 78, 200, 25);
+		textfColonia.setBounds(6, 75, 200, 25);
 		textfColonia.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfColonia.setVisible(false);
 		
 		
 		labelDel = new JLabel("Delegacion:");
-		labelDel.setBounds(216, 58, 100, 30);
+		labelDel.setBounds(216, 53, 100, 30);
 		labelDel.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelDel.setForeground(Color.WHITE);
 //		labelDel.setVisible(false);
 		
 		
 		textfDel = new JTextField();
-		textfDel.setBounds(212, 78, 205, 25);
+		textfDel.setBounds(212, 75, 205, 25);
 		textfDel.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfDel.setVisible(false);
 		
 		labelECalle = new JLabel("Entre calle:");
-		labelECalle.setBounds(10, 101, 100, 30);
+		labelECalle.setBounds(10, 96, 100, 30);
 		labelECalle.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelECalle.setForeground(Color.WHITE);
 //		labelECalle.setVisible(false);
 		
 		
 		textfECalle = new JTextField();
-		textfECalle.setBounds(6, 121, 200, 25);
+		textfECalle.setBounds(6, 118, 200, 25);
 		textfECalle.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfECalle.setVisible(false);
 		
 		
 		labelYCalle = new JLabel("Y calle:");
-		labelYCalle.setBounds(216, 101, 80, 30);
+		labelYCalle.setBounds(216, 96, 80, 30);
 		labelYCalle.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelYCalle.setForeground(Color.WHITE);
 //		labelYCalle.setVisible(false);
 		
 		
 		textfYCalle = new JTextField();
-		textfYCalle.setBounds(212, 121, 205, 25);
+		textfYCalle.setBounds(212, 118, 205, 25);
 		textfYCalle.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfYCalle.setVisible(false);
 		
 		
 		labelCP = new JLabel("C.P.");
-		labelCP.setBounds(10, 144, 48, 30);
+		labelCP.setBounds(10, 139, 48, 30);
 		labelCP.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelCP.setForeground(Color.WHITE);
 //		labelCP.setVisible(false);
 		
 		
 		textfCP = new JTextField();
-		textfCP.setBounds(6, 164, 100, 25);
+		textfCP.setBounds(6, 161, 55, 25);
 		textfCP.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfCP.setVisible(false);
 		
 		
 		labelColor = new JLabel("Referencia:");
-		labelColor.setBounds(111, 144, 100, 30);
+		labelColor.setBounds(71, 139, 100, 30);
 		labelColor.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelColor.setForeground(Color.WHITE);
 //		labelColor.setVisible(false);
 		
 		
 		textfColor = new JTextField();
-		textfColor.setBounds(107, 164, 311, 25);
+		textfColor.setBounds(67, 161, 351, 25);
 		textfColor.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfColor.setVisible(false);
 		
@@ -296,7 +375,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		JPanel pdireccion = new JPanel();
 		pdireccion.setLayout(null);
-		pdireccion.setBounds(6, 145, 425, 200);
+		pdireccion.setBounds(6, 125, 425, 195);
 		pdireccion.setBackground(new Color(140,160,80));
 		TitledBorder td = new TitledBorder("Direccion");
 		td.setTitleFont(new Font("Arial", Font.PLAIN, 15));
@@ -327,41 +406,44 @@ public class Sistema extends JFrame implements ActionListener {
 
 
 		labelAlergia = new JLabel("Alergia:");
-		labelAlergia.setBounds(10, 15, 80, 30);
+		labelAlergia.setBounds(10, 10, 80, 30);
 		labelAlergia.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelAlergia.setForeground(Color.WHITE);
 //		labelAlergia.setVisible(false);
 		
 
 		textfAlergia = new JTextField();
-		textfAlergia.setBounds(6, 35, 200, 25);
+		textfAlergia.setBounds(6, 32, 200, 25);
 		textfAlergia.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfAlergia.setVisible(false);
 		
 
 		labelIntolerancia = new JLabel("Intolerancia:");
-		labelIntolerancia.setBounds(216, 15, 120, 30);
+		labelIntolerancia.setBounds(216, 10, 120, 30);
 		labelIntolerancia.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelIntolerancia.setForeground(Color.WHITE);
 //		labelIntolerancia.setVisible(false);
 		
 
 		textfIntolerancia = new JTextField();
-		textfIntolerancia.setBounds(212, 35, 205, 25);
+		textfIntolerancia.setBounds(212, 32, 205, 25);
 		textfIntolerancia.setFont(new Font("Arial", Font.PLAIN, 14));
 //		textfIntolerancia.setVisible(false);
 		
 
 		rbVegetariano = new JRadioButton("Vegetariano");
-		rbVegetariano.setBounds(60, 410, 130, 30);
+		rbVegetariano.setBounds(60, 378, 110, 20);
+		rbVegetariano.setFont((new Font("Arial", Font.PLAIN, 14)));
 		rbVegetariano.setForeground(Color.WHITE);
 		rbVegetariano.setBackground(new Color(140,160,80));
 		rbVegano = new JRadioButton("Vegano");
-		rbVegano.setBounds(188, 410, 100, 30);
+		rbVegano.setBounds(188, 378, 80, 20);
+		rbVegano.setFont((new Font("Arial", Font.PLAIN, 14)));
 		rbVegano.setForeground(Color.WHITE);
 		rbVegano.setBackground(new Color(140,160,80));
 		rbNinguno = new JRadioButton("Ninguno", true);
-		rbNinguno.setBounds(285, 410, 100, 30);
+		rbNinguno.setBounds(285, 378, 90, 20);
+		rbNinguno.setFont((new Font("Arial", Font.PLAIN, 14)));
 		rbNinguno.setForeground(Color.WHITE);
 		rbNinguno.setBackground(new Color(140,160,80));
 		rbNinguno.setSelected(true);
@@ -385,7 +467,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		JPanel pmedico = new JPanel();
 		pmedico.setLayout(null);
-		pmedico.setBounds(6, 345, 425, 100);
+		pmedico.setBounds(6, 318, 425, 85);
 		pmedico.setBackground(new Color(140,160,80));
 		TitledBorder mtd = new TitledBorder("Regimen");
 		mtd.setTitleFont(new Font("Arial", Font.PLAIN, 15));
@@ -403,8 +485,8 @@ public class Sistema extends JFrame implements ActionListener {
 //		labelInfoExtra.setFont(new Font("Arial", Font.PLAIN, 16));
 //		add(labelInfoExtra);
 
-		labelCumple = new JLabel("CumpleaÃ±os:");
-		labelCumple.setBounds(10, 15, 120, 30);
+		labelCumple = new JLabel("Cumpleaños:");
+		labelCumple.setBounds(10, 10, 120, 30);
 		labelCumple.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelCumple.setForeground(Color.WHITE);
 		
@@ -415,7 +497,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		dia = new JComboBox();
 		//dia.setBounds(10, 490, 90, 25);
-		dia.setBounds(10, 485, 80, 25);
+		dia.setBounds(10, 436, 80, 25);
 		dia.addFocusListener(new FocusListener() {
 			
 			@Override
@@ -434,7 +516,7 @@ public class Sistema extends JFrame implements ActionListener {
 
 		mes = new JComboBox();
 //		mes.setBounds(100, 490, 90, 25);
-		mes.setBounds(88, 485, 125, 25);
+		mes.setBounds(92, 436, 125, 25);
 		mes.addFocusListener(new FocusListener() {
 			
 			@Override
@@ -451,7 +533,7 @@ public class Sistema extends JFrame implements ActionListener {
 
 		anio = new JComboBox();
 //		anio.setBounds(190, 490, 100, 25);
-		anio.setBounds(211, 485, 90, 25);
+		anio.setBounds(220, 436, 90, 25);
 		
 		
 		anio.addFocusListener(new FocusListener() {
@@ -473,7 +555,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		for (int d = 0; d <= 31; d++) {
 			if (d == 0) {
-				dia.addItem("DÃ­a");
+				dia.addItem("Día");
 			} else {
 				dia.addItem(String.valueOf(d));
 			}
@@ -501,7 +583,7 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		for (int a = yearNow.getYear()+1; a >=1900 ; a--) {
 			if (a == yearNow.getYear()+1) {
-				anio.addItem("AÃ±o");
+				anio.addItem("Año");
 			} else {
 				anio.addItem(String.valueOf(a));
 			}
@@ -513,13 +595,13 @@ public class Sistema extends JFrame implements ActionListener {
 		todo.add(anio);
 
 		labelEdad = new JLabel("Edad:");
-		labelEdad.setBounds(321, 15, 80, 30);
+		labelEdad.setBounds(321, 10, 80, 30);
 		labelEdad.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelEdad.setForeground(Color.WHITE);
 		
 
 		textfEdad = new JTextField();
-		textfEdad.setBounds(317, 35, 100, 30);
+		textfEdad.setBounds(317, 32, 100, 25);
 		textfEdad.setFont(new Font("Arial", Font.PLAIN, 14));
 		textfEdad.addFocusListener(new FocusListener() {
 			
@@ -549,51 +631,51 @@ public class Sistema extends JFrame implements ActionListener {
 		
 
 		labelPreferencia = new JLabel("Preferencia:");
-		labelPreferencia.setBounds(10, 60, 130, 30);
+		labelPreferencia.setBounds(10, 52, 130, 30);
 		labelPreferencia.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelPreferencia.setForeground(Color.WHITE);
 		
 
 		textfPreferencia = new JTextField();
-		textfPreferencia.setBounds(6, 80, 200, 25);
+		textfPreferencia.setBounds(6, 74, 200, 25);
 		textfPreferencia.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 		labelCorreo = new JLabel("Correo:");
-		labelCorreo.setBounds(216, 60, 80, 30);
+		labelCorreo.setBounds(216, 52, 80, 30);
 		labelCorreo.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelCorreo.setForeground(Color.WHITE);
 		
 
 		textfCorreo = new JTextField();
-		textfCorreo.setBounds(212, 80, 205, 25);
+		textfCorreo.setBounds(212, 74, 205, 25);
 		textfCorreo.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 
 		labelInstagram = new JLabel("Instagram:");
-		labelInstagram.setBounds(10, 103, 120, 30);
+		labelInstagram.setBounds(10, 92, 120, 30);
 		labelInstagram.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelInstagram.setForeground(Color.WHITE);
 		
 
 		textfInstagram = new JTextField();
-		textfInstagram.setBounds(6, 123, 200, 25);
+		textfInstagram.setBounds(6, 114, 200, 25);
 		textfInstagram.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 
 		labelFb = new JLabel("Facebook:");
-		labelFb.setBounds(216, 103, 100, 30);
+		labelFb.setBounds(216, 92, 100, 30);
 		labelFb.setFont(new Font("Arial", Font.PLAIN, 14));
 		labelFb.setForeground(Color.WHITE);
 		
 
 		textfFb = new JTextField();
-		textfFb.setBounds(212, 123, 205, 25);
+		textfFb.setBounds(212, 114, 205, 25);
 		textfFb.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 		
 		JPanel pie = new JPanel();
 		pie.setLayout(null);
-		pie.setBounds(6, 445, 425, 160);
+		pie.setBounds(6, 402, 425, 148);
 		pie.setBackground(new Color(140,160,80));
 		TitledBorder ietd = new TitledBorder("Informacion Extra");
 		ietd.setTitleFont(new Font("Arial", Font.PLAIN, 15));
@@ -624,12 +706,12 @@ public class Sistema extends JFrame implements ActionListener {
 		taNotas = new JTextArea();
 		taNotas.setFont(new Font("Arial", Font.PLAIN, 14));
 		spNotas = new JScrollPane(taNotas);
-		spNotas.setBounds(10, 20, 403, 60);
+		spNotas.setBounds(10, 17, 403, 58);
 		spNotas.setForeground(Color.WHITE);
 		
 		JPanel pnotas = new JPanel();
 		pnotas.setLayout(null);
-		pnotas.setBounds(6, 605, 425, 90);
+		pnotas.setBounds(6, 548, 425, 85);
 		pnotas.setBackground(new Color(140,160,80));
 		TitledBorder notastd = new TitledBorder("Notas");
 		notastd.setTitleFont(new Font("Arial", Font.PLAIN, 15));
@@ -643,75 +725,84 @@ public class Sistema extends JFrame implements ActionListener {
 		
 		
 		
-		
-		ImageIcon iconGuardar = new ImageIcon("Taro_img/saveicon.png"); // load the image to a imageIcon
+		ImageIcon iconGuardar = new ImageIcon("Taro_jar/Taro_img/saveicon.png"); // load the image to a imageIcon
 		Image imageGuardar = iconGuardar.getImage(); // transform it
 		Image newimgGuardar = imageGuardar.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		iconGuardar = new ImageIcon(newimgGuardar); 
 
 		bGuardar = new JButton(iconGuardar);
 //		bGuardar = new JButton("GUARDAR");
-		bGuardar.setBounds(15, 697, 75, 75);
+		bGuardar.setBounds(7, 635, 83, 65);
 		bGuardar.setToolTipText("GUARDAR");
 //		add(bGuardar);
 		todo.add(bGuardar);
 //		bGuardar.setVerticalAlignment(SwingConstants.BOTTOM);
 		bGuardar.addActionListener(this);
 		
-		ImageIcon iconModificar = new ImageIcon("Taro_img/modifyicon.png"); // load the image to a imageIcon
+		ImageIcon iconModificar = new ImageIcon("Taro_jar/Taro_img/modifyicon.png"); // load the image to a imageIcon
 		Image imageModificar = iconModificar.getImage(); // transform it
 		Image newimgModificar = imageModificar.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		iconModificar = new ImageIcon(newimgModificar); 
 
 		bModificar = new JButton(iconModificar);
-		bModificar.setBounds(95, 697, 75, 75);
+		bModificar.setBounds(95, 635, 80, 65);
 		bModificar.setToolTipText("MODIFICAR");
 //		add(bModificar);
 		todo.add(bModificar);
 		bModificar.addActionListener(this);
 		
-		ImageIcon iconNuevo = new ImageIcon("Taro_img/newicon.png"); // load the image to a imageIcon
+		ImageIcon iconNuevo = new ImageIcon("Taro_jar/Taro_img/newicon.png"); // load the image to a imageIcon
 		Image imageNuevo = iconNuevo.getImage(); // transform it
 		Image newimgNuevo = imageNuevo.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		iconNuevo = new ImageIcon(newimgNuevo); 
 
 		bNuevo = new JButton(iconNuevo);
-		bNuevo.setBounds(175, 697, 75, 75);
+		bNuevo.setBounds(180, 635, 80, 65);
 		bNuevo.setToolTipText("NUEVO");
 //		add(bNuevo);
 		todo.add(bNuevo);
 		bNuevo.addActionListener(this);
 
-		ImageIcon iconEliminar = new ImageIcon("Taro_img/deleteicon2.png"); // load the image to a imageIcon
+		ImageIcon iconEliminar = new ImageIcon("Taro_jar/Taro_img/deleteicon2.png"); // load the image to a imageIcon
 		Image imageEliminar = iconEliminar.getImage(); // transform it
 		Image newimgEliminar = imageEliminar.getScaledInstance(53, 53,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		iconEliminar = new ImageIcon(newimgEliminar); 
 		
 		bEliminar = new JButton(iconEliminar);
-		bEliminar.setBounds(255, 697, 75, 75);
+		bEliminar.setBounds(265, 635, 80, 65);
 		bEliminar.setToolTipText("ELIMINAR");
 //		add(bEliminar);
 		todo.add(bEliminar);
 		bEliminar.addActionListener(this);
 		
-		ImageIcon iconCancelar = new ImageIcon("Taro_img/cancelicon.png"); // load the image to a imageIcon
+		ImageIcon iconCancelar = new ImageIcon("Taro_jar/Taro_img/cancelicon.png"); // load the image to a imageIcon
 		Image imageCancelar = iconCancelar.getImage(); // transform it
 		Image newimgCancelar = imageCancelar.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		iconCancelar = new ImageIcon(newimgCancelar); 
 		
 		bCancelar = new JButton(iconCancelar);
-		bCancelar.setBounds(335, 697, 75, 75);
+		bCancelar.setBounds(350, 635, 80, 65);
 		bCancelar.setToolTipText("CANCELAR");
 //		add(bCancelar);
 		todo.add(bCancelar);
 		bCancelar.addActionListener(this);
 
-	
+		labelBuscar = new JLabel("Buscar :");
+		labelBuscar.setBounds(610, 13, 100, 30);
+		labelBuscar.setFont(new Font("Arial", Font.PLAIN, 16));
+		labelBuscar.setForeground(Color.WHITE);
+		add(labelBuscar);
 		
 		filtro = new JTextField();
-		filtro.setBounds(660, 25, 410, 35);
+		filtro.setBounds(670, 13, 410, 30);
 		filtro.setFont(new Font("Arial", Font.PLAIN, 14));
 		add(filtro);
+		
+		labelReserv = new JLabel("La información personal proporcionada es confidencial para ser usada con fines de calidad en el servicio brindado.");
+		labelReserv.setBounds(550, 670, 740, 30);
+		labelReserv.setFont(new Font("Arial", Font.PLAIN, 14));
+		labelReserv.setForeground(Color.WHITE);
+		add(labelReserv);
 
 		
 	}
@@ -723,6 +814,34 @@ public class Sistema extends JFrame implements ActionListener {
 		table.setGridColor(Color.GRAY);
 		table.setRowHeight(20);
 		
+	
+		
+		//TableCellRender es una interface
+        table.setDefaultRenderer(Object.class, new TableCellRenderer(){
+            //se crea al vuelo la clase que implementa TableCellRender
+            //se crea un atributo DefaultTableCellRender
+            private DefaultTableCellRenderer DEFAULT_RENDERER =  new DefaultTableCellRenderer();
+            @Override
+            //metodo de la interface que se tiene que implementar
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = DEFAULT_RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if(!isSelected) {
+                    if (row%2 == 0){
+                        c.setBackground(Color.WHITE);
+                        
+                    }
+                    else {
+                        c.setBackground(Color.LIGHT_GRAY);
+                    }                        
+                    
+                }
+                return c;
+            }
+
+        });
+
+		
+		
 		JTableHeader header = table.getTableHeader();
 		header.setFont(new Font("Arial", Font.PLAIN, 14));
 		
@@ -730,7 +849,7 @@ public class Sistema extends JFrame implements ActionListener {
 
 		JPanel jp = new JPanel();
 		jp.setLayout(null);
-		jp.setBounds(440, 68, 840, 660);
+		jp.setBounds(440, 48, 910, 625);
 		jp.setBorder(new EmptyBorder(5, 5, 5, 5));
 		jp.setBackground(new Color(140,160,80));
 		jp.setLayout(new BorderLayout(0, 0));
@@ -746,7 +865,7 @@ public class Sistema extends JFrame implements ActionListener {
 
 	public void ingresarDatosTabla(List<ClienteDTO> clientes) {
 
-		String[] header = { "Id", "Nombre", "Apellido", "Telefono", "Calle", "NÂ° Ext.", "NÂ° Int", "Colonia",
+		String[] header = { "Id", "Nombre", "Apellido", "Telefono","Casa", "Calle", "NÂ° Ext.", "NÂ° Int", "Colonia",
 				"Delegacion", "C.P.", "Entre calle", "y calle", "Color", "Alergico", "Intolerante", "Regimen", "Edad",
 				"CumpleaÃ±os", "Preferencia", "Instagram", "Facebook", "Correo", "Notas" };
 		
@@ -758,25 +877,26 @@ public class Sistema extends JFrame implements ActionListener {
 			data[x][1] = clientes.get(x).getNombre();
 			data[x][2] = clientes.get(x).getApellido();
 			data[x][3] = clientes.get(x).getTelefono();
-			data[x][4] = clientes.get(x).getCalle();
-			data[x][5] = clientes.get(x).getNumExt();
-			data[x][6] = clientes.get(x).getNumInt();
-			data[x][7] = clientes.get(x).getColonia();
-			data[x][8] = clientes.get(x).getDelegacion();
-			data[x][9] = clientes.get(x).getCp();
-			data[x][10] = clientes.get(x).geteCalle();
-			data[x][11] = clientes.get(x).getyCalle();
-			data[x][12] = clientes.get(x).getColor();
-			data[x][13] = clientes.get(x).getAlergia();
-			data[x][14] = clientes.get(x).getIntolerancia();
-			data[x][15] = clientes.get(x).getRegimen();
-			data[x][16] = clientes.get(x).getEdad();
-			data[x][17] = clientes.get(x).getCumple();
-			data[x][18] = clientes.get(x).getPreferencia();
-			data[x][19] = clientes.get(x).getInstagram();
-			data[x][20] = clientes.get(x).getFb();
-			data[x][21] = clientes.get(x).getCorreo();
-			data[x][22] = clientes.get(x).getNotas();
+			data[x][4] = clientes.get(x).getCasa();
+			data[x][5] = clientes.get(x).getCalle();
+			data[x][6] = clientes.get(x).getNumExt();
+			data[x][7] = clientes.get(x).getNumInt();
+			data[x][8] = clientes.get(x).getColonia();
+			data[x][9] = clientes.get(x).getDelegacion();
+			data[x][10] = clientes.get(x).getCp();
+			data[x][11] = clientes.get(x).geteCalle();
+			data[x][12] = clientes.get(x).getyCalle();
+			data[x][13] = clientes.get(x).getColor();
+			data[x][14] = clientes.get(x).getAlergia();
+			data[x][15] = clientes.get(x).getIntolerancia();
+			data[x][16] = clientes.get(x).getRegimen();
+			data[x][17] = clientes.get(x).getEdad();
+			data[x][18] = clientes.get(x).getCumple();
+			data[x][19] = clientes.get(x).getPreferencia();
+			data[x][20] = clientes.get(x).getInstagram();
+			data[x][21] = clientes.get(x).getFb();
+			data[x][22] = clientes.get(x).getCorreo();
+			data[x][23] = clientes.get(x).getNotas();
 
 		}
 
@@ -939,6 +1059,8 @@ public class Sistema extends JFrame implements ActionListener {
 		textfApellido.setBackground(Color.white);
 		textfTel.setText("");
 		textfTel.setBackground(Color.white);
+		textfCasa.setText("");
+		textfCasa.setBackground(Color.white);
 		textfCalle.setText("");
 		textfNumExt.setText("");
 		textfNumInt.setText("");
@@ -1040,7 +1162,7 @@ public class Sistema extends JFrame implements ActionListener {
 					
 					int row = table.getSelectedRow(); // select a row
 					
-					LocalDate dt = (LocalDate) table.getValueAt(row, 17);
+					LocalDate dt = (LocalDate) table.getValueAt(row, 18);
 					LocalDate now = LocalDate.now();
 					
 
@@ -1048,25 +1170,26 @@ public class Sistema extends JFrame implements ActionListener {
 					textfNombre.setText((String) table.getValueAt(row, 1));
 					textfApellido.setText((String) table.getValueAt(row, 2));
 					textfTel.setText((String) table.getValueAt(row, 3));
-					textfCalle.setText((String) table.getValueAt(row, 4));
-					textfNumExt.setText((String) table.getValueAt(row, 5));
-					textfNumInt.setText((String) table.getValueAt(row, 6));
-					textfColonia.setText((String) table.getValueAt(row, 7));
-					textfDel.setText((String) table.getValueAt(row, 8));
-					textfCP.setText((String) table.getValueAt(row, 9));
-					textfECalle.setText((String) table.getValueAt(row, 10));
-					textfYCalle.setText((String) table.getValueAt(row, 11));
-					textfColor.setText((String) table.getValueAt(row, 12));
-					textfAlergia.setText((String) table.getValueAt(row, 13));
-					textfIntolerancia.setText((String) table.getValueAt(row, 14));
-					if (((String) table.getValueAt(row, 15)).equals("VEGETARIANO")) {
+					textfCasa.setText((String) table.getValueAt(row, 4));
+					textfCalle.setText((String) table.getValueAt(row, 5));
+					textfNumExt.setText((String) table.getValueAt(row, 6));
+					textfNumInt.setText((String) table.getValueAt(row, 7));
+					textfColonia.setText((String) table.getValueAt(row, 8));
+					textfDel.setText((String) table.getValueAt(row, 9));
+					textfCP.setText((String) table.getValueAt(row, 10));
+					textfECalle.setText((String) table.getValueAt(row, 11));
+					textfYCalle.setText((String) table.getValueAt(row, 12));
+					textfColor.setText((String) table.getValueAt(row, 13));
+					textfAlergia.setText((String) table.getValueAt(row, 14));
+					textfIntolerancia.setText((String) table.getValueAt(row, 15));
+					if (((String) table.getValueAt(row, 16)).equals("VEGETARIANO")) {
 						rbVegetariano.setSelected(true);
-					} else if (((String) table.getValueAt(row, 15)).equals("VEGANO")) {
+					} else if (((String) table.getValueAt(row, 16)).equals("VEGANO")) {
 						rbVegano.setSelected(true);
-					} else if (((String) table.getValueAt(row, 15)).equals(" ")) {
+					} else if (((String) table.getValueAt(row, 16)).equals(" ")) {
 						rbNinguno.setSelected(true);
 					}
-					textfEdad.setText((String) table.getValueAt(row, 16));
+					textfEdad.setText((String) table.getValueAt(row, 17));
 					if(dt==null) {
 						dia.setSelectedIndex(0);
 						mes.setSelectedIndex(0);
@@ -1079,11 +1202,11 @@ public class Sistema extends JFrame implements ActionListener {
 					}
 					
 //					textfCumple.setText((String) table.getValueAt(row, 17));
-					textfPreferencia.setText((String) table.getValueAt(row, 18));
-					textfInstagram.setText((String) table.getValueAt(row, 19));
-					textfFb.setText((String) table.getValueAt(row, 20));
-					textfCorreo.setText((String) table.getValueAt(row, 21));
-					taNotas.setText((String) table.getValueAt(row, 22));
+					textfPreferencia.setText((String) table.getValueAt(row, 19));
+					textfInstagram.setText((String) table.getValueAt(row, 20));
+					textfFb.setText((String) table.getValueAt(row, 21));
+					textfCorreo.setText((String) table.getValueAt(row, 22));
+					taNotas.setText((String) table.getValueAt(row, 23));
 
 					habilitarRowSelectedBotones();
 //	              JOptionPane.showMessageDialog(null, table.getValueAt(row, column)); // get the value of a row and column.
@@ -1184,7 +1307,7 @@ public class Sistema extends JFrame implements ActionListener {
 		// delete
 		if (e.getSource() == bEliminar) {
 			
-			int dialogResult = JOptionPane.showConfirmDialog(null, "Â¿EstÃ¡ seguro de eliminar el registro?","Advertencia",JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			int dialogResult = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?","Advertencia",JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if(dialogResult == JOptionPane.YES_OPTION){
 				deleteConexion(textfid.getText());
 				List<ClienteDTO> clientes = selectConexion();
@@ -1219,6 +1342,7 @@ public class Sistema extends JFrame implements ActionListener {
 		cliente.setNombre(textfNombre.getText());
 		cliente.setApellido(textfApellido.getText());
 		cliente.setTelefono(textfTel.getText());
+		cliente.setCasa(textfCasa.getText());
 		cliente.setCalle(textfCalle.getText());
 		cliente.setNumExt(textfNumExt.getText());
 		cliente.setNumInt(textfNumInt.getText());
@@ -1318,6 +1442,7 @@ public class Sistema extends JFrame implements ActionListener {
 		textfNombre.setEditable(true);
 		textfApellido.setEditable(true);
 		textfTel.setEditable(true);
+		textfCasa.setEditable(true);
 		textfCalle.setEditable(true);
 		textfNumExt.setEditable(true);
 		textfNumInt.setEditable(true);
@@ -1350,6 +1475,7 @@ public class Sistema extends JFrame implements ActionListener {
 		textfNombre.setEditable(false);
 		textfApellido.setEditable(false);
 		textfTel.setEditable(false);
+		textfCasa.setEditable(false);
 		textfCalle.setEditable(false);
 		textfNumExt.setEditable(false);
 		textfNumInt.setEditable(false);
@@ -1362,6 +1488,7 @@ public class Sistema extends JFrame implements ActionListener {
 		textfAlergia.setEditable(false);
 		textfIntolerancia.setEditable(false);
 		rbVegetariano.setEnabled(false);
+		//rbVegetariano.setContentAreaFilled(false);
 		rbVegano.setEnabled(false);
 		rbNinguno.setEnabled(false);
 		textfEdad.setEnabled(false);
